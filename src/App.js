@@ -1,10 +1,25 @@
-import logo from "./logo.svg";
+import { useCallback, useState } from "react";
 import "./App.css";
+import { useForm } from "react-hook-form";
 
 function App() {
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm();
+
+  const onSubmit = (data) => {
+    console.log(data);
+  };
+
   return (
-    <div className="App">
-      <div id="form" className="col-8 col-md-6 mx-auto bg-white p-4 my-4 rounded-3">
+    <div className="App var-bg vh-100 overflow-auto">
+      <div
+        id="form"
+        className="col-8 col-md-6 mx-auto bg-white p-4 my-4 rounded-3"
+      >
         <h3 id="form__head" className="mb-4 text-center">
           Form Validation
         </h3>
@@ -12,16 +27,15 @@ function App() {
           id="newform"
           action="#"
           className="needs-validation text-start"
-          novalidate="true"
         >
           <div className="form-group p-1">
-            <label for="username">Username</label>
+            <label htmlFor="username">Username</label>
             <input
               type="text"
               className="form-control is-valid"
               id="username"
               name="username"
-              required="true"
+              required={true}
             />
             <div className="invalid-feedback">
               Username cannot be blank or have spaces.
@@ -32,13 +46,13 @@ function App() {
           <div className="row">
             <div className="col-md-6 col-12">
               <div className="form-group p-1">
-                <label for="firstname">First Name</label>
+                <label htmlFor="firstname">First Name</label>
                 <input
                   type="text"
                   className="form-control"
                   id="firstname"
                   name="firstname"
-                  required="true"
+                  required={true}
                 />
                 <div className="invalid-feedback">
                   Please enter your first name.
@@ -47,26 +61,28 @@ function App() {
             </div>
             <div className="col-md-6 col-12">
               <div className="form-group p-1">
-                <label for="lastname">Last Name</label>
+                <label htmlFor="lastname">Last Name</label>
                 <input
                   type="text"
                   className="form-control"
                   id="lastname"
                   name="lastname"
-                  required="true"
+                  required={true}
                 />
-                <div className="invalid-feedback">Please enter your last name.</div>
+                <div className="invalid-feedback">
+                  Please enter your last name.
+                </div>
               </div>
             </div>
           </div>
           <div className="form-group p-1">
-            <label for="email">Email</label>
+            <label htmlFor="email">Email</label>
             <input
               type="email"
               className="form-control"
               name="email"
               id="email"
-              required="true"
+              required={true}
             />
             <div className="invalid-feedback">
               Please enter a valid email address.
@@ -76,14 +92,14 @@ function App() {
           <div className="row">
             <div className="col-md-6 col-12">
               <div className="form-group p-1">
-                <label for="password">Password</label>
+                <label htmlFor="password">Password</label>
                 <div className="position-relative">
                   <input
                     type="text"
                     className="form-control"
                     name="password"
                     id="password"
-                    required="true"
+                    required={true}
                   />
                   <i
                     className="position-absolute top-50 end-0 me-2"
@@ -101,13 +117,13 @@ function App() {
             </div>
             <div className="col-md-6 col-12">
               <div className="form-group p-1">
-                <label for="confirmPassword">Confirm Password</label>
+                <label htmlFor="confirmPassword">Confirm Password</label>
                 <input
                   type="text"
                   className="form-control"
                   name="confirmPassword"
                   id="confirmPassword"
-                  required="true"
+                  required={true}
                 />
                 <div className="invalid-feedback">Passwords do not match.</div>
               </div>
@@ -115,7 +131,7 @@ function App() {
           </div>
 
           <div className="form-group p-1 d-flex flex-column ">
-            <label for="phone">Phone No. (with country code)</label>
+            <label htmlFor="phone">Phone No. (with country code)</label>
             <div className="iti iti--allow-dropdown">
               <div className="iti__flag-container">
                 <div
@@ -124,7 +140,7 @@ function App() {
                   aria-controls="iti-0__country-listbox"
                   aria-owns="iti-0__country-listbox"
                   aria-expanded="false"
-                  tabindex="0"
+                  tabIndex="0"
                   title="India (भारत): +91"
                   aria-activedescendant="iti-0__item-in"
                 >
@@ -139,12 +155,12 @@ function App() {
                 >
                   <li
                     className="iti__country iti__standard iti__active"
-                    tabindex="-1"
+                    tabIndex="-1"
                     id="iti-0__item-in"
                     role="option"
                     data-dial-code="91"
                     data-country-code="in"
-                    aria-selected="true"
+                    aria-selected={true}
                   >
                     <div className="iti__flag-box">
                       <div className="iti__flag iti__in"></div>
@@ -159,8 +175,8 @@ function App() {
                 className="form-control"
                 id="phone"
                 name="phone"
-                required="true"
-                autocomplete="off"
+                required={true}
+                autoComplete="off"
                 placeholder="081234 56789"
                 data-intl-tel-input-id="0"
               />
@@ -171,55 +187,55 @@ function App() {
           </div>
           <h5>Address</h5>
           <div className="form-group p-1">
-            <label for="street">Street Address</label>
+            <label htmlFor="street">Street Address</label>
             <input
               type="text"
               className="form-control"
               id="street"
               name="street"
-              required="true"
+              required={true}
             />
           </div>
           <div className="form-group p-1">
-            <label for="address2">Address Line 2</label>
+            <label htmlFor="address2">Address Line 2</label>
             <input
               type="text"
               className="form-control"
               id="address2"
               name="address2"
-              autocomplete="off"
+              autoComplete="off"
             />
           </div>
           <div className="form-group p-1">
-            <label for="city">City</label>
+            <label htmlFor="city">City</label>
             <input
               type="text"
               className="form-control"
               id="city"
               name="city"
-              required="true"
+              required={true}
             />
             <div className="invalid-feedback">Please enter your city.</div>
           </div>
           <div className="form-group p-1">
-            <label for="state">State</label>
+            <label htmlFor="state">State</label>
             <input
               type="text"
               className="form-control"
               id="state"
               name="state"
-              required="true"
+              required={true}
             />
             <div className="invalid-feedback">Please enter your state.</div>
           </div>
           <div className="form-group p-1">
-            <label for="zip">Postal / Zip Code</label>
+            <label htmlFor="zip">Postal / Zip Code</label>
             <input
               type="text"
               className="form-control"
               id="zip"
               name="zip"
-              required="true"
+              required={true}
             />
             <div className="invalid-feedback">
               Please enter your postal/zip code.
@@ -231,9 +247,9 @@ function App() {
               type="checkbox"
               className="form-check-input"
               id="terms"
-              required="true"
+              required={true}
             />
-            <label className="form-check-label" for="terms">
+            <label className="form-check-label" htmlFor="terms">
               I accept the <a href="#">Terms and Conditions</a>
             </label>
             <div className="invalid-feedback">You must accept the terms.</div>
