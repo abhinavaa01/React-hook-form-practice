@@ -29,6 +29,10 @@ function App() {
     // console.log("fs:", formState);
   };
 
+  const toggleVisibility = (e) => {
+    
+  }
+
   return (
     <div className="App var-bg vh-100 overflow-auto">
       <div
@@ -50,11 +54,9 @@ function App() {
             <input
               type="text"
               className={
-                touchedFields.username
-                  ? errors.username || !values.username
+                errors.username
                     ? "form-control is-invalid"
                     : "form-control is-valid"
-                  : "form-control"
               }
               id="username"
               name="username"
@@ -73,12 +75,9 @@ function App() {
                 <label htmlFor="firstname">First Name</label>
                 <input
                   type="text"
-                  className={
-                    touchedFields.firstname
-                      ? errors.firstname
+                  className={errors.firstname
                         ? "form-control is-invalid"
                         : "form-control is-valid"
-                      : "form-control"
                   }
                   id="firstname"
                   name="firstname"
@@ -100,11 +99,9 @@ function App() {
                 <input
                   type="text"
                   className={
-                    touchedFields.lastname
-                      ? errors.lastname
+                    errors.lastname
                         ? "form-control is-invalid"
                         : "form-control is-valid"
-                      : "form-control"
                   }
                   id="lastname"
                   name="lastname"
@@ -122,11 +119,9 @@ function App() {
             <input
               type="email"
               className={
-                touchedFields.email
-                  ? errors.email
+                errors.email
                     ? "form-control is-invalid"
                     : "form-control is-valid"
-                  : "form-control"
               }
               name="email"
               {...register("email", { required: "Please enter a valid email address.", pattern: {
@@ -148,30 +143,29 @@ function App() {
                   <input
                     type="text"
                     className={
-                      touchedFields.password
-                        ? errors.password
+                      errors.password
                           ? "form-control is-invalid"
                           : "form-control is-valid"
-                        : "form-control"
                     }
                     name="password"
-                    {...register("password", { required: true, pattern :{
-                      value: `/?=.*?[A-Z]/`, message: "At least One capital letter should be present."
+                    {...register("password", { required: true, min : {
+                      value: 8, message: "Minimum 8 characters required for a strong password"
+                    }, pattern: {
+                      value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,}$/, message: "Password should be 8-24 characters and include at least 1 letter, 1 number and 1 special character!"
                     } })}
                     aria-invalid={errors.password ? "true" : "false"}
                     id="password"
                   />
                   <i
                     className="position-absolute top-50 end-0 me-2"
-                    id="togglePassword"
+                    id="togglePassword" onClick={toggleVisibility}
                     style={{ transform: "translateY(-50%)", cursor: "pointer" }}
                   >
                     🙈
                   </i>
                   <div className="invalid-feedback">
-                    {errors.password?.message}
                     Password must contain at least one capital letter, one
-                    number, and one special character.
+                    number, and one special character. Should be minimum 8 characters long.
                   </div>
                 </div>
               </div>
@@ -182,14 +176,16 @@ function App() {
                 <input
                   type="text"
                   className={
-                    touchedFields.confirmPassword
-                      ? errors.confirmPassword
+                    errors.confirmPassword
                         ? "form-control is-invalid"
                         : "form-control is-valid"
-                      : "form-control"
                   }
                   name="confirmPassword"
-                  {...register("confirmPassword", { required: true })}
+                  {...register("confirmPassword", { required: true, validate: (val) => {
+                    if (watch('password') != val) {
+                      return "Your passwords do no match";
+                    }
+                  }, })}
                   aria-invalid={errors.confirmPassword ? "true" : "false"}
                   id="confirmPassword"
                 />
@@ -240,12 +236,9 @@ function App() {
               </div>
               <input
                 type="tel"
-                className={
-                  touchedFields.phone
-                    ? errors.phone
+                className={errors.phone
                       ? "form-control is-invalid"
                       : "form-control is-valid"
-                    : "form-control"
                 }
                 id="phone"
                 name="phone"
@@ -264,11 +257,9 @@ function App() {
             <input
               type="text"
               className={
-                touchedFields.street
-                  ? errors.street
+                errors.street
                     ? "form-control is-invalid"
                     : "form-control is-valid"
-                  : "form-control"
               }
               id="street"
               name="street"
@@ -281,11 +272,9 @@ function App() {
             <input
               type="text"
               className={
-                touchedFields.address2
-                  ? errors.address2
+                errors.address2
                     ? "form-control is-invalid"
                     : "form-control is-valid"
-                  : "form-control"
               }
               id="address2"
               name="address2"
@@ -299,11 +288,9 @@ function App() {
             <input
               type="text"
               className={
-                touchedFields.city
-                  ? errors.city
+                errors.city
                     ? "form-control is-invalid"
                     : "form-control is-valid"
-                  : "form-control"
               }
               id="city"
               name="city"
@@ -317,11 +304,9 @@ function App() {
             <input
               type="text"
               className={
-                touchedFields.state
-                  ? errors.state
+                errors.state
                     ? "form-control is-invalid"
                     : "form-control is-valid"
-                  : "form-control"
               }
               id="state"
               name="state"
@@ -335,11 +320,9 @@ function App() {
             <input
               type="text"
               className={
-                touchedFields.zip
-                  ? errors.zip
+                errors.zip
                     ? "form-control is-invalid"
                     : "form-control is-valid"
-                  : "form-control"
               }
               id="zip"
               name="zip"
@@ -352,7 +335,7 @@ function App() {
           </div>
 
           <div className="form-group form-check">
-            <input type="checkbox" className={touchedFields.agreement? errors.agreement? "form-check-input is-invalid" : "form-check-input is-valid" : "form-check-input"} id="terms" {...register("agreement", { required: true})} />
+            <input type="checkbox" className={errors.agreement? "form-check-input is-invalid" : "form-check-input is-valid"} id="terms" {...register("agreement", { required: true})} />
             <label className="form-check-label" htmlFor="terms">
               I accept the <a href="#">Terms and Conditions</a>
             </label>
