@@ -9,13 +9,14 @@ function App() {
     handleSubmit,
     watch,
     formState: { touchedFields, errors },
-    control
+    control,
   } = useForm();
   const values = watch([
     "username",
     "firstname",
     "lastname",
     "email",
+    "phone",
     "password",
     "confirmPassword",
     "street",
@@ -29,9 +30,7 @@ function App() {
     // console.log("fs:", formState);
   };
 
-  const toggleVisibility = (e) => {
-    
-  }
+  const toggleVisibility = (e) => {};
 
   return (
     <div className="App var-bg vh-100 overflow-auto">
@@ -55,8 +54,8 @@ function App() {
               type="text"
               className={
                 errors.username
-                    ? "form-control is-invalid"
-                    : "form-control is-valid"
+                  ? "form-control is-invalid"
+                  : "form-control is-valid"
               }
               id="username"
               name="username"
@@ -75,9 +74,10 @@ function App() {
                 <label htmlFor="firstname">First Name</label>
                 <input
                   type="text"
-                  className={errors.firstname
-                        ? "form-control is-invalid"
-                        : "form-control is-valid"
+                  className={
+                    errors.firstname
+                      ? "form-control is-invalid"
+                      : "form-control is-valid"
                   }
                   id="firstname"
                   name="firstname"
@@ -90,7 +90,9 @@ function App() {
                   })}
                   aria-invalid={errors.firstname ? "true" : "false"}
                 />
-                <div className="invalid-feedback">Please enter your First name.</div>
+                <div className="invalid-feedback">
+                  Please enter your First name.
+                </div>
               </div>
             </div>
             <div className="col-md-6 col-12">
@@ -100,12 +102,14 @@ function App() {
                   type="text"
                   className={
                     errors.lastname
-                        ? "form-control is-invalid"
-                        : "form-control is-valid"
+                      ? "form-control is-invalid"
+                      : "form-control is-valid"
                   }
                   id="lastname"
                   name="lastname"
-                  {...register("lastname", { required: "Please enter your last name." })}
+                  {...register("lastname", {
+                    required: "Please enter your last name.",
+                  })}
                   aria-invalid={errors.lastname ? "true" : "false"}
                 />
                 <div className="invalid-feedback">
@@ -120,13 +124,18 @@ function App() {
               type="email"
               className={
                 errors.email
-                    ? "form-control is-invalid"
-                    : "form-control is-valid"
+                  ? "form-control is-invalid"
+                  : "form-control is-valid"
               }
               name="email"
-              {...register("email", { required: "Please enter a valid email address.", pattern: {
-                value: /^[a-zA-Z0-9. !#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\. [a-zA-Z0-9-]+)*$/, message: "Please enter a valid email address."
-              } })}
+              {...register("email", {
+                required: "Please enter a valid email address.",
+                pattern: {
+                  value:
+                    /^[a-zA-Z0-9. !#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\. [a-zA-Z0-9-]+)*$/,
+                  message: "Please enter a valid email address.",
+                },
+              })}
               aria-invalid={errors.email ? "true" : "false"}
               id="email"
             />
@@ -144,28 +153,39 @@ function App() {
                     type="text"
                     className={
                       errors.password
-                          ? "form-control is-invalid"
-                          : "form-control is-valid"
+                        ? "form-control is-invalid"
+                        : "form-control is-valid"
                     }
                     name="password"
-                    {...register("password", { required: true, min : {
-                      value: 8, message: "Minimum 8 characters required for a strong password"
-                    }, pattern: {
-                      value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,}$/, message: "Password should be 8-24 characters and include at least 1 letter, 1 number and 1 special character!"
-                    } })}
+                    {...register("password", {
+                      required: true,
+                      min: {
+                        value: 8,
+                        message:
+                          "Minimum 8 characters required for a strong password",
+                      },
+                      pattern: {
+                        value:
+                          /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,}$/,
+                        message:
+                          "Password should be 8-24 characters and include at least 1 letter, 1 number and 1 special character!",
+                      },
+                    })}
                     aria-invalid={errors.password ? "true" : "false"}
                     id="password"
                   />
                   <i
                     className="position-absolute top-50 end-0 me-2"
-                    id="togglePassword" onClick={toggleVisibility}
+                    id="togglePassword"
+                    onClick={toggleVisibility}
                     style={{ transform: "translateY(-50%)", cursor: "pointer" }}
                   >
                     🙈
                   </i>
                   <div className="invalid-feedback">
                     Password must contain at least one capital letter, one
-                    number, and one special character. Should be minimum 8 characters long.
+                    number, and one special character. Should be minimum 8
+                    characters long.
                   </div>
                 </div>
               </div>
@@ -177,15 +197,18 @@ function App() {
                   type="text"
                   className={
                     errors.confirmPassword
-                        ? "form-control is-invalid"
-                        : "form-control is-valid"
+                      ? "form-control is-invalid"
+                      : "form-control is-valid"
                   }
                   name="confirmPassword"
-                  {...register("confirmPassword", { required: true, validate: (val) => {
-                    if (watch('password') != val) {
-                      return "Your passwords do no match";
-                    }
-                  }, })}
+                  {...register("confirmPassword", {
+                    required: true,
+                    validate: (val) => {
+                      if (watch("password") != val) {
+                        return "Your passwords do no match";
+                      }
+                    },
+                  })}
                   aria-invalid={errors.confirmPassword ? "true" : "false"}
                   id="confirmPassword"
                 />
@@ -236,13 +259,15 @@ function App() {
               </div>
               <input
                 type="tel"
-                className={errors.phone
-                      ? "form-control is-invalid"
-                      : "form-control is-valid"
+                className={
+                  errors.phone
+                    ? "form-control is-invalid"
+                    : "form-control is-valid"
                 }
                 id="phone"
                 name="phone"
                 autoComplete="off"
+                {...register("phone", { required: true , pattern: {value}})}
                 placeholder="081234 56789"
                 data-intl-tel-input-id="0"
               />
@@ -258,8 +283,8 @@ function App() {
               type="text"
               className={
                 errors.street
-                    ? "form-control is-invalid"
-                    : "form-control is-valid"
+                  ? "form-control is-invalid"
+                  : "form-control is-valid"
               }
               id="street"
               name="street"
@@ -273,8 +298,8 @@ function App() {
               type="text"
               className={
                 errors.address2
-                    ? "form-control is-invalid"
-                    : "form-control is-valid"
+                  ? "form-control is-invalid"
+                  : "form-control is-valid"
               }
               id="address2"
               name="address2"
@@ -289,8 +314,8 @@ function App() {
               type="text"
               className={
                 errors.city
-                    ? "form-control is-invalid"
-                    : "form-control is-valid"
+                  ? "form-control is-invalid"
+                  : "form-control is-valid"
               }
               id="city"
               name="city"
@@ -305,8 +330,8 @@ function App() {
               type="text"
               className={
                 errors.state
-                    ? "form-control is-invalid"
-                    : "form-control is-valid"
+                  ? "form-control is-invalid"
+                  : "form-control is-valid"
               }
               id="state"
               name="state"
@@ -320,9 +345,7 @@ function App() {
             <input
               type="text"
               className={
-                errors.zip
-                    ? "form-control is-invalid"
-                    : "form-control is-valid"
+                errors.zip ? "form-control is-invalid" : "form-control is-valid"
               }
               id="zip"
               name="zip"
@@ -335,7 +358,16 @@ function App() {
           </div>
 
           <div className="form-group form-check">
-            <input type="checkbox" className={errors.agreement? "form-check-input is-invalid" : "form-check-input is-valid"} id="terms" {...register("agreement", { required: true})} />
+            <input
+              type="checkbox"
+              className={
+                errors.agreement
+                  ? "form-check-input is-invalid"
+                  : "form-check-input is-valid"
+              }
+              id="terms"
+              {...register("agreement", { required: true })}
+            />
             <label className="form-check-label" htmlFor="terms">
               I accept the <a href="#">Terms and Conditions</a>
             </label>
