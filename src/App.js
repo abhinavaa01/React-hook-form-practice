@@ -1,8 +1,10 @@
 import "./App.css";
 import { useForm } from "react-hook-form";
 import { DevTool } from "@hookform/devtools";
+import { useState } from "react";
 
 function App() {
+  const [ visiblePass, setVisiblity ] = useState(false);
   const {
     register,
     handleSubmit,
@@ -30,7 +32,9 @@ function App() {
     // console.log("fs:", formState);
   };
 
-  const toggleVisibility = (e) => {};
+  const toggleVisibility = (e) => {
+    setVisiblity((prev)=>!prev);
+  };
 
   return (
     <div className="App var-bg vh-100 overflow-auto">
@@ -55,7 +59,11 @@ function App() {
               className={
                 errors.username
                   ? "form-control is-invalid"
-                  : touchedFields.username? dirtyFields.username? "form-control is-valid" : "form-control is-invalid" : "form-control"
+                  : touchedFields.username
+                  ? dirtyFields.username
+                    ? "form-control is-valid"
+                    : "form-control is-invalid"
+                  : "form-control"
               }
               id="username"
               name="username"
@@ -64,7 +72,9 @@ function App() {
               })}
               aria-invalid={errors.username ? "true" : "false"}
             />
-            <div className="invalid-feedback">Username cannot be blank or have spaces.</div>
+            <div className="invalid-feedback">
+              Username cannot be blank or have spaces.
+            </div>
             <div className="valid-feedback">Looks Good</div>
           </div>
 
@@ -77,7 +87,11 @@ function App() {
                   className={
                     errors.firstname
                       ? "form-control is-invalid"
-                      : touchedFields.firstname? dirtyFields.firstname? "form-control is-valid" : "form-control is-invalid" : "form-control"
+                      : touchedFields.firstname
+                      ? dirtyFields.firstname
+                        ? "form-control is-valid"
+                        : "form-control is-invalid"
+                      : "form-control"
                   }
                   id="firstname"
                   name="firstname"
@@ -103,7 +117,11 @@ function App() {
                   className={
                     errors.lastname
                       ? "form-control is-invalid"
-                      : touchedFields.lastname? dirtyFields.lastname? "form-control is-valid" : "form-control is-invalid" : "form-control"
+                      : touchedFields.lastname
+                      ? dirtyFields.lastname
+                        ? "form-control is-valid"
+                        : "form-control is-invalid"
+                      : "form-control"
                   }
                   id="lastname"
                   name="lastname"
@@ -125,7 +143,11 @@ function App() {
               className={
                 errors.email
                   ? "form-control is-invalid"
-                  : touchedFields.email? dirtyFields.email? "form-control is-valid" : "form-control is-invalid" : "form-control"
+                  : touchedFields.email
+                  ? dirtyFields.email
+                    ? "form-control is-valid"
+                    : "form-control is-invalid"
+                  : "form-control"
               }
               name="email"
               {...register("email", {
@@ -150,11 +172,15 @@ function App() {
                 <label htmlFor="password">Password</label>
                 <div className="position-relative">
                   <input
-                    type="text"
+                    type={visiblePass?"text":"password"}
                     className={
                       errors.password
                         ? "form-control is-invalid"
-                        : touchedFields.password? dirtyFields.password? "form-control is-valid" : "form-control is-invalid" : "form-control"
+                        : touchedFields.password
+                        ? dirtyFields.password
+                          ? "form-control is-valid"
+                          : "form-control is-invalid"
+                        : "form-control"
                     }
                     name="password"
                     {...register("password", {
@@ -180,7 +206,7 @@ function App() {
                     onClick={toggleVisibility}
                     style={{ transform: "translateY(-50%)", cursor: "pointer" }}
                   >
-                    🙈
+                    {visiblePass? "🙈" : "👁"}
                   </i>
                   <div className="invalid-feedback">
                     Password must contain at least one capital letter, one
@@ -198,7 +224,11 @@ function App() {
                   className={
                     errors.confirmPassword
                       ? "form-control is-invalid"
-                      : touchedFields.confirmPassword? dirtyFields.confirmPassword? "form-control is-valid" : "form-control is-invalid" : "form-control"
+                      : touchedFields.confirmPassword
+                      ? dirtyFields.confirmPassword
+                        ? "form-control is-valid"
+                        : "form-control is-invalid"
+                      : "form-control"
                   }
                   name="confirmPassword"
                   {...register("confirmPassword", {
@@ -262,14 +292,22 @@ function App() {
                 className={
                   errors.phone
                     ? "form-control is-invalid"
-                    : touchedFields.phone? dirtyFields.phone? "form-control is-valid" : "form-control is-invalid" : "form-control"
+                    : touchedFields.phone
+                    ? dirtyFields.phone
+                      ? "form-control is-valid"
+                      : "form-control is-invalid"
+                    : "form-control"
                 }
                 id="phone"
                 name="phone"
                 autoComplete="off"
-                {...register("phone", { required: true, pattern : {
-                  value: /^(0|[1-9]\d*)(\.\d+)?$/, message: "Only numbers allowed"
-                } })}
+                {...register("phone", {
+                  required: true,
+                  pattern: {
+                    value: /^(0|[1-9]\d*)(\.\d+)?$/,
+                    message: "Only numbers allowed",
+                  },
+                })}
                 placeholder="081234 56789"
                 data-intl-tel-input-id="0"
               />
@@ -286,7 +324,11 @@ function App() {
               className={
                 errors.street
                   ? "form-control is-invalid"
-                  : touchedFields.phone? dirtyFields.phone? "form-control is-valid" : "form-control is-invalid" : "form-control"
+                  : touchedFields.phone
+                  ? dirtyFields.phone
+                    ? "form-control is-valid"
+                    : "form-control is-invalid"
+                  : "form-control"
               }
               id="street"
               name="street"
@@ -301,7 +343,11 @@ function App() {
               className={
                 errors.address2
                   ? "form-control is-invalid"
-                  : touchedFields.address2? dirtyFields.address2? "form-control is-valid" : "form-control is-invalid" : "form-control"
+                  : touchedFields.address2
+                  ? dirtyFields.address2
+                    ? "form-control is-valid"
+                    : "form-control is-invalid"
+                  : "form-control"
               }
               id="address2"
               name="address2"
@@ -317,7 +363,11 @@ function App() {
               className={
                 errors.city
                   ? "form-control is-invalid"
-                  : touchedFields.city? dirtyFields.city? "form-control is-valid" : "form-control is-invalid" : "form-control"
+                  : touchedFields.city
+                  ? dirtyFields.city
+                    ? "form-control is-valid"
+                    : "form-control is-invalid"
+                  : "form-control"
               }
               id="city"
               name="city"
@@ -333,7 +383,11 @@ function App() {
               className={
                 errors.state
                   ? "form-control is-invalid"
-                  : touchedFields.state? dirtyFields.state? "form-control is-valid" : "form-control is-invalid" : "form-control"
+                  : touchedFields.state
+                  ? dirtyFields.state
+                    ? "form-control is-valid"
+                    : "form-control is-invalid"
+                  : "form-control"
               }
               id="state"
               name="state"
@@ -347,7 +401,13 @@ function App() {
             <input
               type="text"
               className={
-                errors.zip ? "form-control is-invalid" : touchedFields.zip? dirtyFields.zip? "form-control is-valid" : "form-control is-invalid" : "form-control"
+                errors.zip
+                  ? "form-control is-invalid"
+                  : touchedFields.zip
+                  ? dirtyFields.zip
+                    ? "form-control is-valid"
+                    : "form-control is-invalid"
+                  : "form-control"
               }
               id="zip"
               name="zip"
@@ -365,7 +425,11 @@ function App() {
               className={
                 errors.agreement
                   ? "form-check-input is-invalid"
-                  : touchedFields.agreement? dirtyFields.agreement? "form-check-input is-valid" : "form-check-input is-invalid" : "form-check-input"
+                  : touchedFields.agreement
+                  ? dirtyFields.agreement
+                    ? "form-check-input is-valid"
+                    : "form-check-input is-invalid"
+                  : "form-check-input"
               }
               id="terms"
               {...register("agreement", { required: true })}
