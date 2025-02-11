@@ -4,7 +4,7 @@ import { DevTool } from "@hookform/devtools";
 import { useState } from "react";
 
 function App() {
-  const [ visiblePass, setVisiblity ] = useState(false);
+  const [visiblePass, setVisiblity] = useState(false);
   const {
     register,
     handleSubmit,
@@ -33,7 +33,7 @@ function App() {
   };
 
   const toggleVisibility = (e) => {
-    setVisiblity((prev)=>!prev);
+    setVisiblity((prev) => !prev);
   };
 
   return (
@@ -172,7 +172,7 @@ function App() {
                 <label htmlFor="password">Password</label>
                 <div className="position-relative">
                   <input
-                    type={visiblePass?"text":"password"}
+                    type={visiblePass ? "text" : "password"}
                     className={
                       errors.password
                         ? "form-control is-invalid"
@@ -206,7 +206,7 @@ function App() {
                     onClick={toggleVisibility}
                     style={{ transform: "translateY(-50%)", cursor: "pointer" }}
                   >
-                    {visiblePass? "🙈" : "👁"}
+                    {visiblePass ? "🙈" : "👁"}
                   </i>
                   <div className="invalid-feedback">
                     Password must contain at least one capital letter, one
@@ -235,7 +235,7 @@ function App() {
                     required: true,
                     validate: (val) => {
                       if (watch("password") != val) {
-                        return "Your passwords do no match";
+                        return "Your passwords do not match";
                       }
                     },
                   })}
@@ -307,6 +307,11 @@ function App() {
                     value: /^(0|[1-9]\d*)(\.\d+)?$/,
                     message: "Only numbers allowed",
                   },
+                  validate: (val) => {
+                    if (val.length > 11 || val.length < 10) {
+                      return "Please enter a valid phone number";
+                    }
+                  },
                 })}
                 placeholder="081234 56789"
                 data-intl-tel-input-id="0"
@@ -338,17 +343,9 @@ function App() {
           </div>
           <div className="form-group p-1">
             <label htmlFor="address2">Address Line 2</label>
-            <input
+            <textarea
               type="text"
-              className={
-                errors.address2
-                  ? "form-control is-invalid"
-                  : touchedFields.address2
-                  ? dirtyFields.address2
-                    ? "form-control is-valid"
-                    : "form-control is-invalid"
-                  : "form-control"
-              }
+              className={"form-control"}
               id="address2"
               name="address2"
               {...register("address2")}
