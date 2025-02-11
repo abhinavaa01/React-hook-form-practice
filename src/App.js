@@ -321,7 +321,6 @@ function App() {
               Please enter a valid phone number.
             </div>
           </div>
-          <h5>Address</h5>
           <div className="form-group p-1">
             <label htmlFor="street">Street Address</label>
             <input
