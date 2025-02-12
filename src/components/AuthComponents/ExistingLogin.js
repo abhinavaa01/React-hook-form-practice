@@ -1,10 +1,10 @@
 import { useState } from "react";
-import "../../App.css";
 import { useForm } from "react-hook-form";
 import { authCustomApi } from "../../service.js";
 
 const ExistingLogin = () => {
-  const [visiblePass, setVisiblity] = useState(false);
+  const [visiblePass, setVisiblity] = useState(()=>false);
+  const [ errorValues, setError ] = useState(()=>null);
 
   const {
     register,
@@ -23,8 +23,9 @@ const ExistingLogin = () => {
         // user logged in
       })
       .catch((err) => {
-        alert("Error : See details in Console");
-        console.error("err:", err);
+        // alert("Error : See details in Console");
+        // console.error("err:", err);
+        setError(err.message);
       });
   };
 
@@ -120,6 +121,8 @@ const ExistingLogin = () => {
       >
         Login
       </button>
+
+      {errorValues? <span className="text-danger" role="alert">{errorValues}</span> : null}
     </form>
   );
 };

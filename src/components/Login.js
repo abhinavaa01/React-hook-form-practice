@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import ExistingLogin from "./AuthComponents/ExistingLogin";
 import NewSignup from "./AuthComponents/NewSignup";
 import { authCustomApi } from "../service.js";
@@ -10,6 +10,24 @@ const Login = () => {
   const [existing, setExisting] = useState((prev) => true);
   const navigate = useNavigate();
   const [user, setUser] = useState(() => authCustomApi.returnCurrentUser());
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (authUser) => { // Rename to authUser to avoid confusion
+      setUser(authUser);
+      setIsLoading(false); // Authentication status is known
+    });
+
+    return () => unsubscribe(); // Clean up listener - VERY IMPORTANT
+  }, []); // Empty dependency array - runs only once
+
+  useEffect(() => {
+    if (!isLoading) { // Only check and redirect *after* loading is complete
+      if (user?.email) {
+        navigate(-1);
+      }
+    }
+  }, [user, navigate, isLoading]);
 
   if (user?.email) {
     setTimeout(() => {
@@ -17,41 +35,24 @@ const Login = () => {
     }, 2000);
   }
 
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      setUser((prevUser) => user);
-    } else {
-      setUser((prevUser) => null);
-    }
-  });
+  const toggleForm = useCallback((state) => {
+      setExisting(state);
+  }, []);
+
+  console.log("render");
 
   return (
     <div className="d-flex">
       <div className="bg-white shadow mx-auto col-8 col-md-6 fixed-max-width my-5 p-3 rounded-3">
-        <div id="chooseExisting" className="d-flex justify-content-center mb-4">
-          <button
-            className={
-              existing
-                ? "btn btn-primary rounded-0 col-6"
-                : "btn btn-outline-primary rounded-0 col-6"
-            }
-            onClick={(e) => setExisting((prev) => true)}
-          >
-            LOG IN
-          </button>
-          <button
-            className={
-              !existing
-                ? "btn btn-primary rounded-0 col-6"
-                : "btn btn-outline-primary rounded-0 col-6"
-            }
-            onClick={(e) => setExisting((prev) => false)}
-          >
-            SIGN UP
-          </button>
+        <div id="chooseExisting" className="d-flex justify-content-center mb-2">
+          <h3>{existing ? "LOG IN" : "SIGN UP"}</h3>
         </div>
-        <div id="login-form">
-          {existing ? <ExistingLogin /> : <NewSignup />}
+        <div id="login-form text-center m-auto">
+        {isLoading ? (
+                        <div className="spinner-grow text-primary m-auto"></div>
+                    ) : (
+                        existing ? <ExistingLogin /> : <NewSignup />
+                    )}
         </div>
 
         {user?.email ? (
@@ -59,6 +60,32 @@ const Login = () => {
             Already logged in. Redirecting back in 2 seconds.
           </span>
         ) : null}
+
+        {existing ? (
+          <span>
+            Don't have an account?{" "}
+            <span
+              onClick={(e) => toggleForm(false)}
+              href="#"
+              className="text-primary text-decoration-underline mx-1"
+              role="button"
+            >
+              Sign Up
+            </span>
+          </span>
+        ) : (
+          <span>
+            Already have an account?{" "}
+            <span
+              onClick={(e) => toggleForm(true)}
+              href="#"
+              className="text-primary text-decoration-underline mx-1"
+              role="button"
+            >
+              Log In
+            </span>
+          </span>
+        )}
       </div>
     </div>
   );
