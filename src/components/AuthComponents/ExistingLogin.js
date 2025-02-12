@@ -5,6 +5,7 @@ import { authCustomApi } from "../../service.js";
 const ExistingLogin = () => {
   const [visiblePass, setVisiblity] = useState(()=>false);
   const [ errorValues, setError ] = useState(()=>null);
+    const [successValues, setSuccess] = useState(() => null);
 
   const {
     register,
@@ -21,6 +22,7 @@ const ExistingLogin = () => {
       .then((userCred) => {
         // setUser((prevUser) => userCred.user);
         // user logged in
+        setSuccess("Logged in as : " + userCred.user.email);
       })
       .catch((err) => {
         // alert("Error : See details in Console");
@@ -123,6 +125,7 @@ const ExistingLogin = () => {
       </button>
 
       {errorValues? <span className="text-danger" role="alert">{errorValues}</span> : null}
+      {successValues? <span className="text-success" role="alert">{successValues}</span> : null}
     </form>
   );
 };

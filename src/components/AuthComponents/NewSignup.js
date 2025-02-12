@@ -5,6 +5,7 @@ import { authCustomApi } from "../../service.js";
 const NewSignup = () => {
   const [visiblePass, setVisiblity] = useState(() => false);
   const [errorValues, setError] = useState(() => null);
+  const [successValues, setSuccess] = useState(() => null);
 
   const {
     register,
@@ -14,13 +15,14 @@ const NewSignup = () => {
     control,
   } = useForm();
 
-  const login = (data) => {
-    console.log("Log in started");
+  const signUp = (data) => {
+    console.log("Sign Up started");
     authCustomApi
-      .login(data.email, data.password)
+      .createAccount(data.email, data.password)
       .then((userCred) => {
         // setUser((prevUser) => userCred.user);
         // user logged in
+        setSuccess("Logged in as : " + userCred.user.email);
       })
       .catch((err) => {
         // alert("Error : See details in Console");
@@ -36,7 +38,7 @@ const NewSignup = () => {
   return (
     <form
       action="#"
-      onSubmit={handleSubmit(login)}
+      onSubmit={handleSubmit(signUp)}
       className="needs-validation"
       noValidate
     >
@@ -143,15 +145,20 @@ const NewSignup = () => {
       {/* Submit Button */}
       <button
         type="submit"
-        onClick={handleSubmit(login)}
+        onClick={handleSubmit(signUp)}
         className="btn btn-primary col-12 mt-4 mb-2"
       >
-        Login
+        Sign Up
       </button>
 
       {errorValues ? (
         <span className="text-danger" role="alert">
           {errorValues}
+        </span>
+      ) : null}
+      {successValues ? (
+        <span className="text-success" role="alert">
+          {successValues}
         </span>
       ) : null}
     </form>
