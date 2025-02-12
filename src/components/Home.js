@@ -37,7 +37,7 @@ const Home = () => {
     };
   
     return (
-      <div className="App var-bg vh-100 overflow-auto">
+      <div className="App var-bg overflow-auto">
         <div
           id="form"
           className="col-8 col-md-6 mx-auto bg-white p-4 my-4 rounded-3"
