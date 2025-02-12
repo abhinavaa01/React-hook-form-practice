@@ -1,10 +1,17 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { sendResetPasswordLink } from "../../service.js/auth.firebase";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "../../service.js/config.firebase";
+import { authCustomApi } from "../../service.js/index.js";
+import { useNavigate } from "react-router";
 
 const ResetPassword = () => {
   const [errorValues, setError] = useState(() => null);
   const [successValues, setSuccess] = useState(() => null);
+  const navigate = useNavigate();
+  const [user, setUser] = useState(() => authCustomApi.returnCurrentUser());
+  const [isLoading, setIsLoading] = useState(true);
   const {
     register,
     handleSubmit,
@@ -12,6 +19,27 @@ const ResetPassword = () => {
     formState: { touchedFields, errors, dirtyFields },
     control,
   } = useForm();
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (authUser) => {
+      // Rename to authUser to avoid confusion
+      setUser(authUser);
+      setIsLoading(false); // Authentication status is known
+    });
+
+    return () => unsubscribe(); // Clean up listener - VERY IMPORTANT
+  }, []); // Empty dependency array - runs only once
+
+  useEffect(() => {
+    if (!isLoading) {
+      // Only check and redirect *after* loading is complete
+      if (user?.email) {
+        setTimeout(() => {
+          navigate(-1);
+        }, 2000);
+      }
+    }
+  }, [user, navigate, isLoading]);
 
   const sendLink = (data) => {
     // console.log(data);
@@ -79,6 +107,12 @@ const ResetPassword = () => {
         {successValues ? (
           <span className="text-success text-center w-100" role="alert">
             {successValues}
+          </span>
+        ) : null}
+
+        {user?.email ? (
+          <span className="text-success" role="alert">
+            Already logged in. Redirecting back in 2 seconds. <br />
           </span>
         ) : null}
       </div>

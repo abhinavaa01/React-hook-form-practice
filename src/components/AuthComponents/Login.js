@@ -37,8 +37,6 @@ const Login = () => {
     setExisting(state);
   }, []);
 
-  console.log("render");
-
   return (
     <div className="d-flex">
       <div className="bg-white shadow mx-auto col-8 col-md-6 fixed-max-width my-5 p-3 rounded-3">
