@@ -22,11 +22,13 @@ const NewSignup = () => {
       .then((userCred) => {
         // setUser((prevUser) => userCred.user);
         // user logged in
+        setError("");
         setSuccess("Logged in as : " + userCred.user.email);
       })
       .catch((err) => {
         // alert("Error : See details in Console");
         // console.error("err:", err);
+        setSuccess("");
         setError(err.message);
       });
   };

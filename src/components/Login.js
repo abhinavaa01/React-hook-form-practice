@@ -24,16 +24,12 @@ const Login = () => {
   useEffect(() => {
     if (!isLoading) { // Only check and redirect *after* loading is complete
       if (user?.email) {
-        navigate(-1);
+        setTimeout(() => {
+          navigate(-1);
+        }, 2000);
       }
     }
   }, [user, navigate, isLoading]);
-
-  if (user?.email) {
-    setTimeout(() => {
-      navigate(-1);
-    }, 2000);
-  }
 
   const toggleForm = useCallback((state) => {
       setExisting(state);
@@ -57,7 +53,7 @@ const Login = () => {
 
         {user?.email ? (
           <span className="text-success" role="alert">
-            Already logged in. Redirecting back in 2 seconds.
+            Already logged in. Redirecting back in 2 seconds. <br />
           </span>
         ) : null}
 
