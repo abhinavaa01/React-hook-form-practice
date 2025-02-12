@@ -1,5 +1,5 @@
-import * as authApi from "./auth.firebase"
+import * as authCustomApi from "./auth.firebase"
 
 export {
-    authApi
+    authCustomApi
 };

@@ -1,9 +1,11 @@
 import { useState } from "react";
 import "../../App.css";
 import { useForm } from "react-hook-form";
+import { authCustomApi } from "../../service.js";
 
 const ExistingLogin = () => {
-    const [visiblePass, setVisiblity] = useState(false);
+  const [visiblePass, setVisiblity] = useState(false);
+
   const {
     register,
     handleSubmit,
@@ -13,14 +15,22 @@ const ExistingLogin = () => {
   } = useForm();
 
   const login = (data) => {
-    console.log(data);
+    console.log("Log in started");
+    authCustomApi
+      .login(data.email, data.password)
+      .then((userCred) => {
+        // setUser((prevUser) => userCred.user);
+        // user logged in
+      })
+      .catch((err) => {
+        alert("Error : See details in Console");
+        console.error("err:", err);
+      });
   };
-  
+
   const toggleVisibility = (e) => {
     setVisiblity((prev) => !prev);
   };
-
-  const values = watch(["email", "password", "confirmPass"]);
 
   return (
     <form
@@ -47,7 +57,7 @@ const ExistingLogin = () => {
             required: "Please enter a valid email address.",
             pattern: {
               value:
-                /^[a-zA-Z0-9. !#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\. [a-zA-Z0-9-]+)*$/,
+                /^[a-zA-Z0-9. !#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/,
               message: "Please enter a valid email address.",
             },
           })}
@@ -102,6 +112,14 @@ const ExistingLogin = () => {
           </div>
         </div>
       </div>
+      {/* Submit Button */}
+      <button
+        type="submit"
+        onClick={handleSubmit(login)}
+        className="btn btn-primary col-12 mt-4 mb-2"
+      >
+        Login
+      </button>
     </form>
   );
 };

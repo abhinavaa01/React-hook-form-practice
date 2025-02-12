@@ -13,3 +13,7 @@ export const logout = () => {
 export const createAccount = (email, pass) => {
     return createUserWithEmailAndPassword(auth, email, pass);
 }
+
+export const returnCurrentUser = () => {
+    return auth.currentUser;
+}
