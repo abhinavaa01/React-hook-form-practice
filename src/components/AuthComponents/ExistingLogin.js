@@ -1,7 +1,9 @@
+import { useState } from "react";
 import "../../App.css";
 import { useForm } from "react-hook-form";
 
 const ExistingLogin = () => {
+    const [visiblePass, setVisiblity] = useState(false);
   const {
     register,
     handleSubmit,
@@ -12,6 +14,10 @@ const ExistingLogin = () => {
 
   const login = (data) => {
     console.log(data);
+  };
+  
+  const toggleVisibility = (e) => {
+    setVisiblity((prev) => !prev);
   };
 
   const values = watch(["email", "password", "confirmPass"]);
