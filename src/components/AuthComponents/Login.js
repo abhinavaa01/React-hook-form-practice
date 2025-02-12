@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useState } from "react";
-import ExistingLogin from "./AuthComponents/ExistingLogin";
-import NewSignup from "./AuthComponents/NewSignup";
-import { authCustomApi } from "../service.js";
-import { useNavigate } from "react-router";
+import ExistingLogin from "./ExistingLogin.js";
+import NewSignup from "./NewSignup.js";
+import { authCustomApi } from "../../service.js/index.js";
+import { Link, useNavigate } from "react-router";
 import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "../service.js/config.firebase.js";
+import { auth } from "../../service.js/config.firebase.js";
 
 const Login = () => {
   const [existing, setExisting] = useState((prev) => true);
@@ -13,7 +13,8 @@ const Login = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (authUser) => { // Rename to authUser to avoid confusion
+    const unsubscribe = onAuthStateChanged(auth, (authUser) => {
+      // Rename to authUser to avoid confusion
       setUser(authUser);
       setIsLoading(false); // Authentication status is known
     });
@@ -22,7 +23,8 @@ const Login = () => {
   }, []); // Empty dependency array - runs only once
 
   useEffect(() => {
-    if (!isLoading) { // Only check and redirect *after* loading is complete
+    if (!isLoading) {
+      // Only check and redirect *after* loading is complete
       if (user?.email) {
         setTimeout(() => {
           navigate(-1);
@@ -32,7 +34,7 @@ const Login = () => {
   }, [user, navigate, isLoading]);
 
   const toggleForm = useCallback((state) => {
-      setExisting(state);
+    setExisting(state);
   }, []);
 
   console.log("render");
@@ -44,11 +46,13 @@ const Login = () => {
           <h3>{existing ? "LOG IN" : "SIGN UP"}</h3>
         </div>
         <div id="login-form text-center m-auto">
-        {isLoading ? (
-                        <div className="spinner-grow text-primary m-auto"></div>
-                    ) : (
-                        existing ? <ExistingLogin /> : <NewSignup />
-                    )}
+          {isLoading ? (
+            <div className="spinner-grow text-primary m-auto"></div>
+          ) : existing ? (
+            <ExistingLogin />
+          ) : (
+            <NewSignup />
+          )}
         </div>
 
         {user?.email ? (
@@ -56,6 +60,8 @@ const Login = () => {
             Already logged in. Redirecting back in 2 seconds. <br />
           </span>
         ) : null}
+
+        {existing ? <div>Forgot password ?{" "} <Link to="/resetpassword">Reset Now</Link></div> : null}
 
         {existing ? (
           <span>

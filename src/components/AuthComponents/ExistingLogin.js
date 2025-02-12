@@ -3,9 +3,9 @@ import { useForm } from "react-hook-form";
 import { authCustomApi } from "../../service.js";
 
 const ExistingLogin = () => {
-  const [visiblePass, setVisiblity] = useState(()=>false);
-  const [ errorValues, setError ] = useState(()=>null);
-    const [successValues, setSuccess] = useState(() => null);
+  const [visiblePass, setVisiblity] = useState(() => false);
+  const [errorValues, setError] = useState(() => null);
+  const [successValues, setSuccess] = useState(() => null);
 
   const {
     register,
@@ -126,8 +126,16 @@ const ExistingLogin = () => {
         Login
       </button>
 
-      {errorValues? <span className="text-danger" role="alert">{errorValues}</span> : null}
-      {successValues? <span className="text-success" role="alert">{successValues}</span> : null}
+      {errorValues ? (
+        <span className="text-danger" role="alert">
+          {errorValues}
+        </span>
+      ) : null}
+      {successValues ? (
+        <span className="text-success" role="alert">
+          {successValues}
+        </span>
+      ) : null}
     </form>
   );
 };
