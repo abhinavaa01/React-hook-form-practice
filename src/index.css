@@ -5,12 +5,13 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background: linear-gradient(to right, #C5426E, #642B73);
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
-.var-bg {
-  background: linear-gradient(to right, #C5426E, #642B73);
+.fixed-max-width {
+  max-width: 1200px !important;
 }
