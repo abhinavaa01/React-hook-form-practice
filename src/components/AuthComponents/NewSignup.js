@@ -34,7 +34,7 @@ const NewSignup = () => {
 
   const signUp = (data) => {
     console.log("Sign Up started");
-    authJsonApi.signUp(data.email, data.password).then((result)=> {
+    authJsonApi.signUp(data).then((result)=> {
       console.log(result);
       success("Signed Up as : " + data.email);
     }).catch((errmsg)=> {

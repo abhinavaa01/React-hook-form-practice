@@ -22,6 +22,11 @@ const Header = () => {
 
   return (
     <div className="bg-info px-3 py-2 d-flex">
+        <NavLink className={({ isActive }) =>
+            isActive
+              ? "btn btn-outline-dark me-3 my-auto"
+              : "btn btn-dark me-3 my-auto"
+          } to='/'>Home</NavLink>
       <div id="authStateInHeader" className="me-3 my-auto">
         <span className="fw-bold">Auth State : </span>
         {user
@@ -39,8 +44,8 @@ const Header = () => {
         <NavLink
           className={({ isActive }) =>
             isActive
-              ? "btn btn-success my-auto ms-auto"
-              : "btn btn-primary my-auto ms-auto"
+              ? "btn btn-outline-dark my-auto ms-auto"
+              : "btn btn-dark my-auto ms-auto"
           }
           to="/login"
         >

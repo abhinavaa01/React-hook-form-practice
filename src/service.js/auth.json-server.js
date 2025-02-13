@@ -15,7 +15,13 @@ export const login = async (email, pass) => {
     const users = await response.json(); // Await response.json()
 
     if (users.length > 0) {
+      console.log(users[0]);
+      const storageUserData = {
+        ...users[0],
+        isloggedIn : true
+      }
       localStorage.setItem("isloggedIn", "true");
+      localStorage.setItem("authUser", JSON.stringify(storageUserData));
       return users[0]; // Or return the user object
     } else {
       throw new Error(
@@ -29,12 +35,12 @@ export const login = async (email, pass) => {
   }
 };
 
-export const signUp = async (email, password) => {
-  const newUserData = { email: email, password: password };
+export const signUp = async (data) => {
+  // const newUserData = { email: data.email, password: data.password };
   try {
     // 1. Check if user with email already exists
     const checkResponse = await fetch(
-      `http://localhost:3000/users?email=${email}`
+      `http://localhost:3000/users?email=${data.email}`
     );
     if (!checkResponse.ok) {
       const errorText = await checkResponse.text();
@@ -54,7 +60,7 @@ export const signUp = async (email, password) => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(newUserData),
+      body: JSON.stringify(data),
     });
 
     if (!response.ok) {
@@ -65,8 +71,12 @@ export const signUp = async (email, password) => {
     }
 
     const newUser = await response.json();
-
+    const storageUserData = {
+      ...data,
+      isloggedIn : true
+    }
     localStorage.setItem("isloggedIn", "true");
+    localStorage.setItem("authUser", JSON.stringify(storageUserData));
     return newUser;
   } catch (error) {
     console.error("Signup error:", error);
