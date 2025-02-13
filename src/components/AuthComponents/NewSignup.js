@@ -64,6 +64,13 @@ const NewSignup = () => {
     setVisiblity((prev) => !prev);
   };
 
+  const tempfunc = (e) => {
+    e.preventDefault();
+    authJsonApi.checkApiResponse().then((result)=>{
+      console.log("API response",result);
+    }).catch((err)=>err);
+  }
+
   return (
     <form
       action="#"
@@ -179,6 +186,8 @@ const NewSignup = () => {
       >
         Sign Up
       </button>
+
+      {/* <button className="btn btn-dark" onClick={tempfunc}>Temp function</button> */}
 
       {messages.errormessage ? (
         <span className="text-danger" role="alert">

@@ -1,9 +1,12 @@
+const apiUrl = process.env.REACT_APP_JSONServerAPIUrl;
+
+
 // Function created using gemini AI
 export const login = async (email, pass) => {
   // Use async/await
   try {
     const response = await fetch(
-      "http://localhost:3000/users?email=" + email + "&password=" + pass
+      apiUrl + "users?email=" + email + "&password=" + pass
     );
     if (!response.ok) {
       const errorText = await response.text();
@@ -40,7 +43,7 @@ export const signUp = async (data) => {
   try {
     // 1. Check if user with email already exists
     const checkResponse = await fetch(
-      `http://localhost:3000/users?email=${data.email}`
+      apiUrl + `users?email=${data.email}`
     );
     if (!checkResponse.ok) {
       const errorText = await checkResponse.text();
@@ -55,7 +58,7 @@ export const signUp = async (data) => {
     if (existingUsers.length > 0) {
       throw new Error("User with this email already exists."); // Or return null, etc.
     }
-    const response = await fetch("http://localhost:3000/users", {
+    const response = await fetch(apiUrl + "users", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -83,3 +86,25 @@ export const signUp = async (data) => {
     throw error;
   }
 };
+
+export const checkApiResponse = async () => {
+  try {
+    // console.log(apiUrl);
+    const response = await fetch(apiUrl + 'users');
+
+    if (!response.ok) {
+      const errorText = await response.text(); // Attempt to get error details from the server
+      console.error(`API request failed with status ${response.status}: ${errorText || response.statusText}`);
+      return null; // Or throw the error if you want the caller to handle it
+    }
+
+    const responseData = await response.json(); // Parse JSON response
+
+    console.log("API Response:", responseData); // Log the successful response data
+    return responseData; // Return the response data if needed
+
+  } catch (error) {
+    console.error("Error checking API:", error);
+    return null; // Or throw the error
+  }
+}
