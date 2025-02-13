@@ -33,7 +33,7 @@ const ExistingLogin = () => {
   }
 
   const login = (data) => {
-    console.log("Log in started");
+    // console.log("Log in started");
     authJsonApi
       .login(data.email, data.password)
       .then((res) => {

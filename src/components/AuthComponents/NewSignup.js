@@ -33,8 +33,12 @@ const NewSignup = () => {
   } = useForm();
 
   const signUp = (data) => {
-    console.log("Sign Up started");
-    authJsonApi.signUp(data).then((result)=> {
+    // console.log("Sign Up started");
+    const dataToSave = {
+      email: data.email,
+      password: data.password,
+    }
+    authJsonApi.signUp(dataToSave).then((result)=> {
       console.log(result);
       success("Signed Up as : " + data.email);
     }).catch((errmsg)=> {
