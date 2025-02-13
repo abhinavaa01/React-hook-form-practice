@@ -1,11 +1,28 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { authCustomApi } from "../../service.js";
+import { authCustomApi, authJsonApi } from "../../service.js";
 
 const NewSignup = () => {
   const [visiblePass, setVisiblity] = useState(() => false);
-  const [errorValues, setError] = useState(() => null);
-  const [successValues, setSuccess] = useState(() => null);
+  const [messages, setMessages ] = useState({
+    successMessage: "",
+    errormessage: ""
+  })
+
+  const success = (msg) => {
+    setMessages({
+      errormessage: "",
+      successMessage: msg
+    })
+  }
+
+  const failure = (msg) => {
+    console.error("err:--", msg);
+    setMessages({
+      errormessage: msg,
+      successMessage: ""
+    })
+  }
 
   const {
     register,
@@ -17,20 +34,26 @@ const NewSignup = () => {
 
   const signUp = (data) => {
     console.log("Sign Up started");
-    authCustomApi
-      .createAccount(data.email, data.password)
-      .then((userCred) => {
-        // setUser((prevUser) => userCred.user);
-        // user logged in
-        setError("");
-        setSuccess("Logged in as : " + userCred.user.email);
-      })
-      .catch((err) => {
-        // alert("Error : See details in Console");
-        // console.error("err:", err);
-        setSuccess("");
-        setError(err.message);
-      });
+    authJsonApi.signUp(data.email, data.password).then((result)=> {
+      console.log(result);
+      success("Signed Up as : " + data.email);
+    }).catch((errmsg)=> {
+      failure(errmsg.message);
+    })
+    // authCustomApi
+    //   .createAccount(data.email, data.password)
+    //   .then((userCred) => {
+    //     // setUser((prevUser) => userCred.user);
+    //     // user logged in
+    //     setError("");
+    //     setSuccess("Signed Up as : " + userCred.user.email);
+    //   })
+    //   .catch((err) => {
+    //     // alert("Error : See details in Console");
+    //     // console.error("err:", err);
+    //     setSuccess("");
+    //     setError(err.message);
+    //   });
   };
 
   const toggleVisibility = (e) => {
@@ -153,14 +176,14 @@ const NewSignup = () => {
         Sign Up
       </button>
 
-      {errorValues ? (
+      {messages.errormessage ? (
         <span className="text-danger" role="alert">
-          {errorValues}
+          {messages.errormessage}
         </span>
       ) : null}
-      {successValues ? (
+      {messages.successMessage ? (
         <span className="text-success" role="alert">
-          {successValues}
+          {messages.successMessage}
         </span>
       ) : null}
     </form>
