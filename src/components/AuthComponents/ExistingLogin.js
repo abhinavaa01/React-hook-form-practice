@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { authCustomApi } from "../../service.js";
+import { authCustomApi, authJsonApi } from "../../service.js";
 
 const ExistingLogin = () => {
   const [visiblePass, setVisiblity] = useState(() => false);
@@ -17,20 +17,32 @@ const ExistingLogin = () => {
 
   const login = (data) => {
     console.log("Log in started");
-    authCustomApi
-      .login(data.email, data.password)
-      .then((userCred) => {
-        // setUser((prevUser) => userCred.user);
-        // user logged in
+    authJsonApi
+      .login("email", "password")
+      .then((res) => {
+        console.log(res);
         setError("");
-        setSuccess("Logged in as : " + userCred.user.email);
+        setSuccess("Logged in as : ");
       })
       .catch((err) => {
-        // alert("Error : See details in Console");
-        // console.error("err:", err);
+        console.log("err", err);
         setSuccess("");
         setError(err.message);
       });
+    // authCustomApi
+    //   .login(data.email, data.password)
+    //   .then((userCred) => {
+    //     // setUser((prevUser) => userCred.user);
+    //     // user logged in
+    //     setError("");
+    //     setSuccess("Logged in as : " + userCred.user.email);
+    //   })
+    //   .catch((err) => {
+    //     // alert("Error : See details in Console");
+    //     // console.error("err:", err);
+    //     setSuccess("");
+    //     setError(err.message);
+    //   });
   };
 
   const toggleVisibility = (e) => {
@@ -90,15 +102,6 @@ const ExistingLogin = () => {
             name="password"
             {...register("password", {
               required: true,
-              min: {
-                value: 8,
-                message: "Minimum 8 characters required for a strong password",
-              },
-              pattern: {
-                value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,}$/,
-                message:
-                  "Password should be 8-24 characters and include at least 1 letter, 1 number and 1 special character!",
-              },
             })}
             aria-invalid={errors.password ? "true" : "false"}
             id="password"
@@ -112,8 +115,7 @@ const ExistingLogin = () => {
             {visiblePass ? "🙈" : "👁"}
           </i>
           <div className="invalid-feedback">
-            Password must contain at least one capital letter, one number, and
-            one special character. Should be minimum 8 characters long.
+            Password is required.
           </div>
         </div>
       </div>
