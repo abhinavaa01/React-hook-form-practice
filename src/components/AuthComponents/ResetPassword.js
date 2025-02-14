@@ -1,17 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { sendResetPasswordLink } from "../../service.js/auth.firebase";
-import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "../../service.js/config.firebase";
-import { authCustomApi } from "../../service.js/index.js";
-import { useNavigate } from "react-router";
+import { authCustomApi, authJsonApi } from "../../service.js/index.js";
+import { data, useNavigate } from "react-router";
 
 const ResetPassword = () => {
-  const [errorValues, setError] = useState(() => null);
-  const [successValues, setSuccess] = useState(() => null);
   const navigate = useNavigate();
-  const [user, setUser] = useState(() => authCustomApi.returnCurrentUser());
-  const [isLoading, setIsLoading] = useState(true);
+  const [visiblePass, setVisiblity] = useState(() => false);
+  const [messages, setMessages] = useState({
+    successMessage: "",
+    errormessage: ""
+  });
   const {
     register,
     handleSubmit,
@@ -20,40 +19,49 @@ const ResetPassword = () => {
     control,
   } = useForm();
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (authUser) => {
-      // Rename to authUser to avoid confusion
-      setUser(authUser);
-      setIsLoading(false); // Authentication status is known
-    });
+  const success = (msg) => {
+    setMessages({
+      errormessage: "",
+      successMessage: msg
+    })
+  }
 
-    return () => unsubscribe(); // Clean up listener - VERY IMPORTANT
-  }, []); // Empty dependency array - runs only once
-
-  useEffect(() => {
-    if (!isLoading) {
-      // Only check and redirect *after* loading is complete
-      if (user?.email) {
-        setTimeout(() => {
-          navigate(-1);
-        }, 2000);
-      }
-    }
-  }, [user, navigate, isLoading]);
+  const failure = (msg) => {
+    console.error("err:--", msg);
+    setMessages({
+      errormessage: msg,
+      successMessage: ""
+    })
+  }
 
   const sendLink = (data) => {
     // console.log(data);
     sendResetPasswordLink(data.email)
       .then((res) => {
         console.log(res);
-        setError("");
-        setSuccess("Password reset link sent to your email successfully!");
+        success("Password reset link sent to your email successfully!");
       })
       .catch((err) => {
-        setSuccess("");
-        setError(err.message);
+        failure(err.message);
       });
   };
+
+  const resetPass = (data) => {
+    console.log("pass reset console");
+    authJsonApi.updateUserPassword(data.email, data.password).then((result)=> {
+      success("Successfully resetted password !");
+      console.log(result);
+    }).catch((err)=> {
+      failure(err.message? err.message : err);
+    })
+    // success("Password reset successfull ! -No");
+  }
+
+  const toggleVisibility = (e) => {
+    setVisiblity((prev) => !prev);
+  };
+
+
   return (
     <div className="d-flex">
       <div className="bg-white shadow mx-auto col-8 col-md-6 fixed-max-width my-5 p-3 rounded-3">
@@ -62,7 +70,7 @@ const ResetPassword = () => {
         </div>
         <form
           action="#"
-          onSubmit={handleSubmit(sendLink)}
+          onSubmit={handleSubmit(resetPass)}
           className="needs-validation mb-2"
           noValidate
         >
@@ -95,24 +103,97 @@ const ResetPassword = () => {
               Please enter a valid email address.
             </div>
           </div>
+          <div className="form-group p-1">
+            <label htmlFor="password">Password</label>
+            <div className="position-relative">
+              <input
+                type={visiblePass ? "text" : "password"}
+                className={
+                  errors.password
+                    ? "form-control is-invalid"
+                    : touchedFields.password
+                    ? dirtyFields.password
+                      ? "form-control is-valid"
+                      : "form-control is-invalid"
+                    : "form-control"
+                }
+                name="password"
+                {...register("password", {
+                  required: true,
+                  min: {
+                    value: 8,
+                    message:
+                      "Minimum 8 characters required for a strong password",
+                  },
+                  pattern: {
+                    value:
+                      /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,}$/,
+                    message:
+                      "Password should be 8-24 characters and include at least 1 letter, 1 number and 1 special character!",
+                  },
+                })}
+                aria-invalid={errors.password ? "true" : "false"}
+                id="password"
+              />
+              <i
+                className="position-absolute top-50 end-0 me-2"
+                id="togglePassword"
+                onClick={toggleVisibility}
+                style={{ transform: "translateY(-50%)", cursor: "pointer" }}
+              >
+                {visiblePass ? "🙈" : "👁"}
+              </i>
+              <div className="invalid-feedback">
+                Password must contain at least one capital letter, one number,
+                and one special character. Should be minimum 8 characters long.
+              </div>
+            </div>
+          </div>
+          <div className="form-group p-1">
+            <label htmlFor="confirmPassword">Confirm Password</label>
+            <input
+              type="text"
+              className={
+                errors.confirmPassword
+                  ? "form-control is-invalid"
+                  : touchedFields.confirmPassword
+                  ? dirtyFields.confirmPassword
+                    ? "form-control is-valid"
+                    : "form-control is-invalid"
+                  : "form-control"
+              }
+              name="confirmPassword"
+              {...register("confirmPassword", {
+                required: true,
+                validate: (val) => {
+                  if (watch("password") != val) {
+                    return "Your passwords do not match";
+                  }
+                },
+              })}
+              aria-invalid={errors.confirmPassword ? "true" : "false"}
+              id="confirmPassword"
+            />
+            <div className="invalid-feedback">Passwords do not match.</div>
+          </div>
 
-          <button type="submit" className="btn btn-primary col-12 mt-3" onClick={handleSubmit(sendLink)}>Send Link</button>
+          <button
+            type="submit"
+            className="btn btn-primary col-12 mt-3"
+            onClick={handleSubmit(resetPass)}
+          >
+            Reset Password
+          </button>
         </form>
 
-        {errorValues ? (
+        {messages.errormessage ? (
           <span className="text-danger text-center w-100" role="alert">
-            {errorValues}
+            {messages.errormessage}
           </span>
         ) : null}
-        {successValues ? (
+        {messages.successMessage ? (
           <span className="text-success text-center w-100" role="alert">
-            {successValues}
-          </span>
-        ) : null}
-
-        {user?.email ? (
-          <span className="text-success" role="alert">
-            Already logged in. Redirecting back in 2 seconds. <br />
+            {messages.successMessage}
           </span>
         ) : null}
       </div>
