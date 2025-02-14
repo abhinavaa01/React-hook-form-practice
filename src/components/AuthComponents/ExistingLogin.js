@@ -5,11 +5,12 @@ import { useAuthStore } from "../../zustand/store.js";
 
 const ExistingLogin = () => {
   const [visiblePass, setVisiblity] = useState(() => false);
-  const saveLogin = useAuthStore((state)=> state.saveLogin);
-    const [messages, setMessages ] = useState({
-      successMessage: "",
-      errormessage: ""
-    })
+  const saveLogin = useAuthStore((state) => state.saveLogin);
+  const [messages, setMessages] = useState({
+    successMessage: "",
+    errormessage: "",
+    loading: false,
+  });
 
   const {
     register,
@@ -22,20 +23,40 @@ const ExistingLogin = () => {
   const success = (msg) => {
     setMessages({
       errormessage: "",
-      successMessage: msg
-    })
-  }
+      successMessage: msg,
+      loading: false,
+    });
+  };
+
+  const loading = () => {
+    setMessages({
+      errormessage: "",
+      successMessage: "",
+      loading: true,
+    });
+
+    setTimeout(() => {
+      if (messages.loading) {
+        setMessages({
+          errormessage: "Request Timeout, Please try again later.",
+          successMessage: "",
+          loading: false,
+        });
+      }
+    }, 15000);
+  };
 
   const failure = (msg) => {
-    console.error("err:--", msg);
     setMessages({
       errormessage: msg,
-      successMessage: ""
-    })
-  }
+      successMessage: "",
+      loading: false,
+    });
+  };
 
   const login = (data) => {
-    // console.log("Log in started");
+    if (messages.loading) return;
+    loading();
     authJsonApi
       .login(data.email, data.password)
       .then((res) => {
@@ -46,18 +67,6 @@ const ExistingLogin = () => {
       .catch((err) => {
         failure(err.message);
       });
-    // authCustomApi
-    //   .login(data.email, data.password)
-    //   .then((userCred) => {
-    //     // setUser((prevUser) => userCred.user);
-    //     // user logged in
-    //     success("Logged in as : " + userCred.user.email);
-    //   })
-    //   .catch((err) => {
-    //     // alert("Error : See details in Console");
-    //     // console.error("err:", err);
-    //     failure(err.message);
-    //   });
   };
 
   const toggleVisibility = (e) => {
@@ -129,9 +138,7 @@ const ExistingLogin = () => {
           >
             {visiblePass ? "🙈" : "👁"}
           </i>
-          <div className="invalid-feedback">
-            Password is required.
-          </div>
+          <div className="invalid-feedback">Password is required.</div>
         </div>
       </div>
       {/* Submit Button */}
@@ -140,7 +147,7 @@ const ExistingLogin = () => {
         onClick={handleSubmit(login)}
         className="btn btn-primary col-12 mt-4 mb-2"
       >
-        Login
+        {messages.loading ? "Loading... Please Wait" : "Login"}
       </button>
 
       {messages.errormessage ? (

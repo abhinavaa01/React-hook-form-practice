@@ -8,23 +8,43 @@ const NewSignup = () => {
   const saveLogin = useAuthStore((state)=> state.saveLogin);
   const [messages, setMessages ] = useState({
     successMessage: "",
-    errormessage: ""
+    errormessage: "",
+    loading: false
   })
 
   const success = (msg) => {
     setMessages({
       errormessage: "",
-      successMessage: msg
-    })
-  }
+      successMessage: msg,
+      loading: false,
+    });
+  };
+
+  const loading = () => {
+    setMessages({
+      errormessage: "",
+      successMessage: "",
+      loading: true,
+    });
+
+    setTimeout(() => {
+      if (messages.loading) {
+        setMessages({
+          errormessage: "Request Timeout, Please try again later.",
+          successMessage: "",
+          loading: false,
+        });
+      }
+    }, 10000);
+  };
 
   const failure = (msg) => {
-    console.error("err:--", msg);
     setMessages({
       errormessage: msg,
-      successMessage: ""
-    })
-  }
+      successMessage: "",
+      loading: false,
+    });
+  };
 
   const {
     register,
@@ -35,7 +55,8 @@ const NewSignup = () => {
   } = useForm();
 
   const signUp = (data) => {
-    // console.log("Sign Up started");
+    if (messages.loading) return;
+    loading();
     const dataToSave = {
       email: data.email,
       password: data.password,
@@ -47,20 +68,6 @@ const NewSignup = () => {
     }).catch((errmsg)=> {
       failure(errmsg.message);
     })
-    // authCustomApi
-    //   .createAccount(data.email, data.password)
-    //   .then((userCred) => {
-    //     // setUser((prevUser) => userCred.user);
-    //     // user logged in
-    //     setError("");
-    //     setSuccess("Signed Up as : " + userCred.user.email);
-    //   })
-    //   .catch((err) => {
-    //     // alert("Error : See details in Console");
-    //     // console.error("err:", err);
-    //     setSuccess("");
-    //     setError(err.message);
-    //   });
   };
 
   const toggleVisibility = (e) => {
@@ -186,8 +193,9 @@ const NewSignup = () => {
         type="submit"
         onClick={handleSubmit(signUp)}
         className="btn btn-primary col-12 mt-4 mb-2"
+        disabled={messages.loading}
       >
-        Sign Up
+        {messages.loading ? "Loading... Please Wait" :"Sign Up"}
       </button>
 
       {/* <button className="btn btn-dark" onClick={tempfunc}>Temp function</button> */}

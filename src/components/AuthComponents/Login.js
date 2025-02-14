@@ -1,37 +1,21 @@
 import { useCallback, useEffect, useState } from "react";
 import ExistingLogin from "./ExistingLogin.js";
 import NewSignup from "./NewSignup.js";
-import { authCustomApi } from "../../service.js/index.js";
 import { Link, useNavigate } from "react-router";
-import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "../../service.js/config.firebase.js";
+import { useAuthStore } from "../../zustand/store.js";
 
 const Login = () => {
   const [existing, setExisting] = useState((prev) => true);
+  const user = useAuthStore((state) => state.userData);
   const navigate = useNavigate();
-  const [user, setUser] = useState(() => authCustomApi.returnCurrentUser());
-  const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (authUser) => {
-      // Rename to authUser to avoid confusion
-      setUser(authUser);
-      setIsLoading(false); // Authentication status is known
-    });
-
-    return () => unsubscribe(); // Clean up listener - VERY IMPORTANT
-  }, []); // Empty dependency array - runs only once
-
-  useEffect(() => {
-    if (!isLoading) {
-      // Only check and redirect *after* loading is complete
-      if (user?.email) {
-        setTimeout(() => {
-          navigate(-1);
-        }, 2000);
-      }
+  useEffect(()=> {
+    if(user?.email) {
+      setTimeout(() => {
+        navigate(-1);
+      }, 3000);
     }
-  }, [user, navigate, isLoading]);
+  });
 
   const toggleForm = useCallback((state) => {
     setExisting(state);
@@ -44,9 +28,7 @@ const Login = () => {
           <h3>{existing ? "LOG IN" : "SIGN UP"}</h3>
         </div>
         <div id="login-form text-center m-auto">
-          {isLoading ? (
-            <div className="spinner-grow text-primary m-auto"></div>
-          ) : existing ? (
+          {existing ? (
             <ExistingLogin />
           ) : (
             <NewSignup />
@@ -54,9 +36,10 @@ const Login = () => {
         </div>
 
         {user?.email ? (
-          <span className="text-success" role="alert">
-            Already logged in. Redirecting back in 2 seconds. <br />
-          </span>
+          <div className="text-success d-flex" role="alert">
+            <div className="spinner-border spinner-border-sm my-auto me-2" role="status"></div>
+            <div className="my-auto">Authenticated User found! Redirecting back in 3 seconds.</div><br />
+          </div>
         ) : null}
 
         {existing ? <div>Forgot password ?{" "} <Link to="/resetpassword">Reset Now</Link></div> : null}
