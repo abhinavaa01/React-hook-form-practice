@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { sendResetPasswordLink } from "../../service.js/auth.firebase";
-import { authCustomApi, authJsonApi } from "../../service.js/index.js";
-import { data, useNavigate } from "react-router";
+import { authJsonApi } from "../../service.js/index.js";
+import { useAuthStore } from "../../zustand/store.js";
 
 const ResetPassword = () => {
-  const navigate = useNavigate();
   const [visiblePass, setVisiblity] = useState(() => false);
+  const saveLogin = useAuthStore((state) => state.saveLogin);
   const [messages, setMessages] = useState({
     successMessage: "",
     errormessage: ""
@@ -51,6 +51,7 @@ const ResetPassword = () => {
     authJsonApi.updateUserPassword(data.email, data.password).then((result)=> {
       success("Successfully resetted password !");
       console.log(result);
+      saveLogin(result);
     }).catch((err)=> {
       failure(err.message? err.message : err);
     })

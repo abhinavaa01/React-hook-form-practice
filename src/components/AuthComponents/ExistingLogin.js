@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { authCustomApi, authJsonApi } from "../../service.js";
+import { useAuthStore } from "../../zustand/store.js";
 
 const ExistingLogin = () => {
   const [visiblePass, setVisiblity] = useState(() => false);
+  const saveLogin = useAuthStore((state)=> state.saveLogin);
     const [messages, setMessages ] = useState({
       successMessage: "",
       errormessage: ""
@@ -39,6 +41,7 @@ const ExistingLogin = () => {
       .then((res) => {
         console.log(res);
         success("Logged in as : " + data.email);
+        saveLogin(res);
       })
       .catch((err) => {
         failure(err.message);

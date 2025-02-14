@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { authCustomApi, authJsonApi } from "../../service.js";
+import { useAuthStore } from "../../zustand/store.js";
 
 const NewSignup = () => {
   const [visiblePass, setVisiblity] = useState(() => false);
+  const saveLogin = useAuthStore((state)=> state.saveLogin);
   const [messages, setMessages ] = useState({
     successMessage: "",
     errormessage: ""
@@ -40,6 +42,7 @@ const NewSignup = () => {
     }
     authJsonApi.signUp(dataToSave).then((result)=> {
       console.log(result);
+      saveLogin(result);
       success("Signed Up as : " + data.email);
     }).catch((errmsg)=> {
       failure(errmsg.message);

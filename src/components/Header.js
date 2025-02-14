@@ -1,29 +1,17 @@
-import { useEffect, useState } from "react";
-import { auth } from "../service.js/config.firebase";
-import { onAuthStateChanged } from "firebase/auth";
 import { NavLink } from "react-router";
-import { authCustomApi } from "../service.js";
+import { useAuthStore } from "../zustand/store.js";
 
 const Header = () => {
-  const [user, setUser] = useState(authCustomApi.returnCurrentUser());
+  // const [user, setUser] = useState(authCustomApi.returnCurrentUser());
+  const user = useAuthStore((state) => state.userData);
+  const loggedIn = useAuthStore((state) => state.isAuthenticated);
+  const saveLogout = useAuthStore((state) => state.saveLogout);
 
   const logOut = () => {
-    localStorage.removeItem("authUser");
-    localStorage.setItem("isloggedIn", 'false')
+    // localStorage.removeItem("authUser");
+    // localStorage.setItem("isloggedIn", 'false');
+    saveLogout();
   }
-
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      setUser((prevUser) => user);
-    } else {
-      setUser((prevUser) => null);
-    }
-  });
-
-  // const logoutHandler = (e) => {
-  //   e.preventDefault();
-  //   authCustomApi.logout();
-  // };
 
   return (
     <div className="bg-info px-3 py-2 d-flex">
@@ -39,11 +27,11 @@ const Header = () => {
       </NavLink>
       <div id="authStateInHeader" className="me-3 my-auto">
         <span className="fw-bold">Auth State : </span>
-        {user
+        {loggedIn
           ? "Logged in with email id (" + user.email + ")"
           : "Not logged in"}
       </div>
-      {user ? (
+      {loggedIn ? (
         <button
           className="btn btn-dark my-auto ms-auto"
           onClick={logOut}
