@@ -2,9 +2,12 @@ import "../App.css";
 import { useForm } from "react-hook-form";
 import { DevTool } from "@hookform/devtools";
 import { useState } from "react";
+import { authJsonApi } from "../service.js";
+import { useAuthStore } from "../zustand/store";
 
 const Home = () => {
     const [visiblePass, setVisiblity] = useState(false);
+    const savelogin = useAuthStore((state) => state.saveLogin);
     const {
       register,
       handleSubmit,
@@ -27,8 +30,12 @@ const Home = () => {
       "zip",
     ]);
     const onSubmit = (data) => {
-      console.log("form submitted");
-      console.log(data);
+      authJsonApi.signUp(data).then((result) => {
+        console.log(result);
+        savelogin(result);
+      });
+      // console.log("form submitted");
+      // console.log(data);
       // console.log("fs:", formState);
     };
   
@@ -437,7 +444,7 @@ const Home = () => {
             </div>
   
             <button type="submit" className="mt-4 d-block w-100 btn btn-primary">
-              Submit
+              Submit and SignUp
             </button>
           </form>
         </div>
