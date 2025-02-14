@@ -7,9 +7,11 @@ import { useAuthStore } from "../../zustand/store.js";
 const ResetPassword = () => {
   const [visiblePass, setVisiblity] = useState(() => false);
   const saveLogin = useAuthStore((state) => state.saveLogin);
+  const user = useAuthStore((state) => state.userData);
   const [messages, setMessages] = useState({
     successMessage: "",
-    errormessage: ""
+    errormessage: "",
+    loading: false,
   });
   const {
     register,
@@ -22,17 +24,36 @@ const ResetPassword = () => {
   const success = (msg) => {
     setMessages({
       errormessage: "",
-      successMessage: msg
-    })
-  }
+      successMessage: msg,
+      loading: false,
+    });
+  };
+
+  const loading = () => {
+    setMessages({
+      errormessage: "",
+      successMessage: "",
+      loading: true,
+    });
+
+    setTimeout(() => {
+      if (messages.loading) {
+        setMessages({
+          errormessage: "Request Timeout, Please try again later.",
+          successMessage: "",
+          loading: false,
+        });
+      }
+    }, 15000);
+  };
 
   const failure = (msg) => {
-    console.error("err:--", msg);
     setMessages({
       errormessage: msg,
-      successMessage: ""
-    })
-  }
+      successMessage: "",
+      loading: false,
+    });
+  };
 
   const sendLink = (data) => {
     // console.log(data);
@@ -47,15 +68,14 @@ const ResetPassword = () => {
   };
 
   const resetPass = (data) => {
-    console.log("pass reset console");
+    if (messages.loading) return;
+    loading();
     authJsonApi.updateUserPassword(data.email, data.password).then((result)=> {
       success("Successfully resetted password !");
-      console.log(result);
       saveLogin(result);
     }).catch((err)=> {
       failure(err.message? err.message : err);
-    })
-    // success("Password reset successfull ! -No");
+    });
   }
 
   const toggleVisibility = (e) => {
@@ -99,13 +119,14 @@ const ResetPassword = () => {
               })}
               aria-invalid={errors.email ? "true" : "false"}
               id="email"
+              placeholder={user.email? user.email : "Enter your email"}
             />
             <div className="invalid-feedback">
               Please enter a valid email address.
             </div>
           </div>
           <div className="form-group p-1">
-            <label htmlFor="password">Password</label>
+            <label htmlFor="password">New Password</label>
             <div className="position-relative">
               <input
                 type={visiblePass ? "text" : "password"}
@@ -182,8 +203,9 @@ const ResetPassword = () => {
             type="submit"
             className="btn btn-primary col-12 mt-3"
             onClick={handleSubmit(resetPass)}
+            disabled={messages.loading}
           >
-            Reset Password
+            {messages.loading ? "Loading... Please Wait" : "Reset Password"}
           </button>
         </form>
 
