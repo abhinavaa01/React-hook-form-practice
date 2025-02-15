@@ -10,11 +10,11 @@ const ConfirmModal = () => {
 
   const confirmHandler = () => {
     confirm(content.data);
-    hide();
+    hide({ message: content.successMsg? content.successMsg : "Successfull", success: true });
   };
 
   return (
-    <Modal show={show} onHide={hide}>
+    <Modal show={show} onHide={hide} centered>
       <div className="modal-header">
         <h5 className="modal-title">{content.title}</h5>
         <button

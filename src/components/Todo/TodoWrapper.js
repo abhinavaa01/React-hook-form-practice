@@ -1,7 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import TodoInput from "./TodoInput";
 import Todo from "./Todo";
-import { useTodoStore } from "../../zustand/store";
+import {
+  useEditModalStore,
+  useModalStore,
+  useTodoStore,
+} from "../../zustand/store";
 import EditModal from "../EditModal";
 import ConfirmModal from "../ConfirmModal";
 
@@ -13,6 +17,26 @@ const TodoWrapper = () => {
   });
   const todos = useTodoStore((state) => state.todos);
   const toggleTodo = useTodoStore((state) => state.toggleTodo);
+  const confirmModalAfterMessage = useModalStore(
+    (state) => state.editModalAfterMessage
+  );
+  const editModalAfterMessage = useEditModalStore(
+    (state) => state.editModalAfterMessage
+  );
+
+  useEffect(() => { // These are to handle Success or error messages after modal closes
+    if (confirmModalAfterMessage?.message && confirmModalAfterMessage?.success) {
+      success(confirmModalAfterMessage?.message);
+    } else if (confirmModalAfterMessage?.message) {
+      failure(confirmModalAfterMessage?.message);
+    }
+
+    if (editModalAfterMessage?.message && editModalAfterMessage?.success) {
+      success(editModalAfterMessage?.message);
+    } else if (editModalAfterMessage?.message) {
+      failure(editModalAfterMessage?.message);
+    }
+  }, [confirmModalAfterMessage, editModalAfterMessage]);
 
   const loading = (status) => {
     setMessages({ successMessage: "", errorMessage: "", loading: status });
@@ -67,7 +91,16 @@ const TodoWrapper = () => {
       </div>
       <div id="todos" className="d-flex flex-column">
         {todos.map((todo) => {
-          return <Todo data={todo} key={todo.id} togglecheck={toggleTodo} loadingFunc={loading} successFunc={success} failureFunc={failure} />;
+          return (
+            <Todo
+              data={todo}
+              key={todo.id}
+              togglecheck={toggleTodo}
+              loadingFunc={loading}
+              successFunc={success}
+              failureFunc={failure}
+            />
+          );
         })}
       </div>
 

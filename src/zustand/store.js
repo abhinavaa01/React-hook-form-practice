@@ -25,15 +25,29 @@ export const useModalStore = create((set)=> ({
   visiblity: false,
   modalContent: {},
   confirm: {},
+  afterMessage: {},
   showModal: (content) => set(()=>({ visiblity: true, modalContent: content })),
-  hideModal: () => set(()=>({ visiblity: false, modalContent: {} })),
+  hideModal:  (msg) => {
+    set(()=>({ visiblity: false, modalContent: {}, afterMessage: msg, confirm: {} }));
+
+    setTimeout(() => {
+      set(()=>({ afterMessage: {} }));
+    }, 5000);
+  },
   updateModal: (content, func) => set(()=>({ visiblity: true, modalContent: content, confirm: func })),
 }));
 
 export const useEditModalStore = create((set)=> ({
   visiblity: false,
   modalContent: {},
+  afterMessage: {},
   showModal: (content) => set(()=>({ visiblity: true, modalContent: content })),
-  hideModal: () => set(()=>({ visiblity: false, modalContent: {} })),
+  hideModal: (msg) => {
+    set(()=>({ visiblity: false, modalContent: {}, afterMessage: msg }));
+
+    setTimeout(() => {
+      set(()=>({ afterMessage: {} }));
+    }, 5000);
+  },
   updateModal: (content) => set(()=>({ visiblity: true, modalContent: content }))
 }));
