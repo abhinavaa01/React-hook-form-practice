@@ -9,8 +9,8 @@ const Login = () => {
   const user = useAuthStore((state) => state.userData);
   const navigate = useNavigate();
 
-  useEffect(()=> {
-    if(user?.email) {
+  useEffect(() => {
+    if (user?.email) {
       setTimeout(() => {
         navigate(-1);
       }, 3000);
@@ -28,21 +28,31 @@ const Login = () => {
           <h3>{existing ? "LOG IN" : "SIGN UP"}</h3>
         </div>
         <div id="login-form text-center m-auto">
-          {existing ? (
-            <ExistingLogin />
-          ) : (
-            <NewSignup />
-          )}
+          {existing ? <ExistingLogin /> : <NewSignup />}
         </div>
 
         {user?.email ? (
           <div className="text-success d-flex" role="alert">
-            <div className="spinner-border spinner-border-sm my-auto me-2" role="status"></div>
-            <div className="my-auto">Authenticated User found! Redirecting back in 3 seconds.</div><br />
+            <div
+              className="spinner-border spinner-border-sm my-auto me-2"
+              role="status"
+            ></div>
+            <div className="my-auto">
+              Authenticated User found! Redirecting back in 3 seconds.
+            </div>
+            <br />
           </div>
         ) : null}
 
-        {existing ? <div>Forgot password ?{" "} <Link to="/resetpassword">Reset Now</Link></div> : null}
+        {existing ? (
+          <div>
+            Forgot password ? <Link to="/resetpassword">Reset Now</Link>
+          </div>
+        ) : (
+          <div>
+            Trust us? We will never compromise your privacy! <Link to="/form">Fill a Detailed Signup Form...</Link>
+          </div>
+        )}
 
         {existing ? (
           <span>
