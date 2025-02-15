@@ -1,20 +1,27 @@
 import React from "react";
-import { useTodoStore } from "../../zustand/store";
+import { useEditModalStore, useTodoStore } from "../../zustand/store";
 
-const Todo = ({ data }) => {
+const Todo = ({ data, successFunc, loadingFunc, failureFunc }) => {
   const toggleCheck = useTodoStore((state) => state.toggleTodo);
   const delTodo = useTodoStore((state) => state.removeTodo);
+  const editModalContent = useEditModalStore((state) => state.updateModal);
 
   const completedHandler = (e) => {
     toggleCheck(data);
   };
 
   const editHandler = (e) => {
-    console.log("Edit button clicked");
+    e.preventDefault();
+    console.log("edit clicked");
+    editModalContent({
+      title: "Edit Todo",
+      data: data,
+    });
   };
 
   const deleteHandler = (e) => {
     delTodo(data);
+    successFunc("Todo deleted Successfully !");
   };
 
   return (
@@ -26,13 +33,13 @@ const Todo = ({ data }) => {
           checked={data.isCompleted}
           onChange={completedHandler}
         />
-        <div className={data.isCompleted?"text-decoration-line-through":""}>{data.text}</div>
+        <div className={data.isCompleted?"text-decoration-line-through text-muted":""}>{data.text}</div>
       </div>
       <div className="input-group d-flex col-12 justify-content-end">
-        <span className="btn btn-sm btn-outline-secondary" role="button" onClick={editHandler} disabled={data.isCompleted}>
+        <span className={data.isCompleted? "btn btn-sm btn-outline-secondary disabled" : "btn btn-sm btn-outline-secondary"} role="button" onClick={editHandler} disabled={data.isCompleted}>
           Edit
         </span>
-        <span className="btn btn-sm btn-outline-danger" role="button" onClick={deleteHandler} disabled={data.isCompleted}>
+        <span className={data.isCompleted? "btn btn-sm btn-outline-danger disabled" : "btn btn-sm btn-outline-danger"} role="button" onClick={deleteHandler} disabled={data.isCompleted}>
           Delete
         </span>
       </div>

@@ -1,0 +1,77 @@
+import React, { useEffect } from "react";
+import { Modal } from "react-bootstrap";
+import { useEditModalStore, useTodoStore } from "../zustand/store";
+import { useForm } from "react-hook-form";
+
+const EditModal = () => {
+  const show = useEditModalStore((state) => state.visiblity);
+  const content = useEditModalStore((state) => state.modalContent);
+  const hide = useEditModalStore((state) => state.hideModal);
+  const editTodoFunc = useTodoStore((state) => state.editTodo);
+    const {
+      register,
+      handleSubmit,
+      formState: { touchedFields, errors, dirtyFields },
+      setValue
+    } = useForm();
+    
+    const editTodoHandler = (data) => {
+        const newTodo = {
+            id: content?.data?.id,
+            isCompleted: content?.data?.isCompleted,
+            text: data.todoText
+        }
+        editTodoFunc(newTodo);
+        setValue("todoText", "");
+        hide();
+    };
+  return (
+      <Modal show={show} onHide={hide}>
+            <div className="modal-header">
+              <h5 className="modal-title">{content?.title}</h5>
+              <button
+                type="button"
+                className="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+                onClick={hide}
+              ></button>
+            </div>
+            <div className="modal-body">
+              <form
+                id="todo-input-group"
+                className="input-group mb-3"
+                onSubmit={handleSubmit(editTodoHandler)}
+              >
+                <input
+                  type="text"
+                  {...register("todoText", { required: true })}
+                  className={
+                    errors.username
+                      ? "form-control is-invalid"
+                      : touchedFields.username
+                      ? dirtyFields.username
+                        ? "form-control is-valid"
+                        : "form-control is-invalid"
+                      : "form-control"
+                  }
+                  defaultValue={content?.data?.text}
+                  aria-invalid={errors.username ? "true" : "false"}
+                  placeholder="Add a task you want to do"
+                  aria-label="Add a task you want to do"
+                />
+                <button
+                  className="btn btn-outline-success"
+                  type="submit"
+                  id="button-addon2"
+                  onClick={handleSubmit(editTodoHandler)}
+                >
+                  SAVE
+                </button>
+              </form>
+            </div>
+      </Modal>
+  );
+};
+
+export default EditModal;

@@ -10,15 +10,6 @@ export const useAuthStore = create(persist((set) => ({
   name: 'auth-storage',
 }))
 
-// export const useToDoStore = create(persist((set) => ({
-//   todos: [],
-//   addTodo: (todo) => set((state) => ({ todos: [...state.todos, todo] })),
-//   removeTodo: (todo) => set((state) => ({ todos: state.todos.filter((t) => t !== todo) })),
-//   clearTodos: () => set(() => ({ todos: [] })),
-// }),{
-//   name: 'todo-storage',
-// }));
-
 
 export const useTodoStore = create(persist((set)=> ({
   todos: [{id: 1, text: 'Sample Todo', isCompleted: false}],
@@ -29,3 +20,19 @@ export const useTodoStore = create(persist((set)=> ({
 }), {
   name: 'todo-storage',
 }))
+
+export const useModalStore = create((set)=> ({
+  visiblity: false,
+  modalContent: {},
+  showModal: (content) => set(()=>({ visiblity: true, modalContent: content })),
+  hideModal: () => set(()=>({ visiblity: false, modalContent: {} })),
+  updateModal: (content) => set(()=>({ visiblity: true, modalContent: content }))
+}));
+
+export const useEditModalStore = create((set)=> ({
+  visiblity: false,
+  modalContent: {},
+  showModal: (content) => set(()=>({ visiblity: true, modalContent: content })),
+  hideModal: () => set(()=>({ visiblity: false, modalContent: {} })),
+  updateModal: (content) => set(()=>({ visiblity: true, modalContent: content }))
+}));
