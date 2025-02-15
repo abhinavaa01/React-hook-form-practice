@@ -6,6 +6,7 @@ import { useAuthStore } from "../../zustand/store.js";
 const ExistingLogin = () => {
   const [visiblePass, setVisiblity] = useState(() => false);
   const saveLogin = useAuthStore((state) => state.saveLogin);
+  const userLoggedIn = useAuthStore((state) => state.isAuthenticated);
   const [messages, setMessages] = useState({
     successMessage: "",
     errormessage: "",
@@ -146,6 +147,7 @@ const ExistingLogin = () => {
         type="submit"
         onClick={handleSubmit(login)}
         className="btn btn-primary col-12 mt-4 mb-2"
+        disabled={messages.loading || userLoggedIn}
       >
         {messages.loading ? "Loading... Please Wait" : "Login"}
       </button>
