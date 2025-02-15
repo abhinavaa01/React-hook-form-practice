@@ -3,6 +3,7 @@ import TodoInput from "./TodoInput";
 import Todo from "./Todo";
 import { useTodoStore } from "../../zustand/store";
 import EditModal from "../EditModal";
+import ConfirmModal from "../ConfirmModal";
 
 const TodoWrapper = () => {
   const [messages, setMessages] = useState({
@@ -71,6 +72,7 @@ const TodoWrapper = () => {
       </div>
 
       <EditModal />
+      <ConfirmModal />
     </div>
   );
 };

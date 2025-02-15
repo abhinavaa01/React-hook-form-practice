@@ -14,6 +14,13 @@ const EditModal = () => {
       formState: { touchedFields, errors, dirtyFields },
       setValue
     } = useForm();
+
+    useEffect(() => {
+        // console.log("content changed", content);
+        if (content?.data) {
+            setValue("todoText", content.data.text);
+        }
+    }, [content]);
     
     const editTodoHandler = (data) => {
         const newTodo = {
@@ -26,7 +33,7 @@ const EditModal = () => {
         hide();
     };
   return (
-      <Modal show={show} onHide={hide}>
+      <Modal show={show} onHide={hide} centered>
             <div className="modal-header">
               <h5 className="modal-title">{content?.title}</h5>
               <button
@@ -47,18 +54,18 @@ const EditModal = () => {
                   type="text"
                   {...register("todoText", { required: true })}
                   className={
-                    errors.username
+                    errors.todoText
                       ? "form-control is-invalid"
-                      : touchedFields.username
-                      ? dirtyFields.username
+                      : touchedFields.todoText
+                      ? dirtyFields.todoText
                         ? "form-control is-valid"
                         : "form-control is-invalid"
                       : "form-control"
                   }
                   defaultValue={content?.data?.text}
-                  aria-invalid={errors.username ? "true" : "false"}
-                  placeholder="Add a task you want to do"
-                  aria-label="Add a task you want to do"
+                  aria-invalid={errors.todoText ? "true" : "false"}
+                  placeholder="Enter the correct task"
+                  aria-label="Enter the correct task"
                 />
                 <button
                   className="btn btn-outline-success"

@@ -1,9 +1,10 @@
 import React from "react";
-import { useEditModalStore, useTodoStore } from "../../zustand/store";
+import { useEditModalStore, useModalStore, useTodoStore } from "../../zustand/store";
 
 const Todo = ({ data, successFunc, loadingFunc, failureFunc }) => {
   const toggleCheck = useTodoStore((state) => state.toggleTodo);
   const delTodo = useTodoStore((state) => state.removeTodo);
+  const delConfirm = useModalStore((state) => state.updateModal);
   const editModalContent = useEditModalStore((state) => state.updateModal);
 
   const completedHandler = (e) => {
@@ -20,8 +21,8 @@ const Todo = ({ data, successFunc, loadingFunc, failureFunc }) => {
   };
 
   const deleteHandler = (e) => {
-    delTodo(data);
-    successFunc("Todo deleted Successfully !");
+    delConfirm({title : "Delete Todo", text: "Are you sure you want to delete this todo ?", data: data}, delTodo);
+    // successFunc("Todo deleted Successfully !");
   };
 
   return (

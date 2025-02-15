@@ -29,15 +29,15 @@ const TodoInput = () => {
         type="text"
         {...register("todoText", { required: true })}
         className={
-          errors.username
+          errors.todoText
             ? "form-control is-invalid"
-            : touchedFields.username
-            ? dirtyFields.username
+            : touchedFields.todoText
+            ? dirtyFields.todoText
               ? "form-control is-valid"
               : "form-control is-invalid"
             : "form-control"
         }
-        aria-invalid={errors.username ? "true" : "false"}
+        aria-invalid={errors.todoText ? "true" : "false"}
         placeholder="Add a task you want to do"
         aria-label="Add a task you want to do"
       />

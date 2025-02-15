@@ -24,9 +24,10 @@ export const useTodoStore = create(persist((set)=> ({
 export const useModalStore = create((set)=> ({
   visiblity: false,
   modalContent: {},
+  confirm: {},
   showModal: (content) => set(()=>({ visiblity: true, modalContent: content })),
   hideModal: () => set(()=>({ visiblity: false, modalContent: {} })),
-  updateModal: (content) => set(()=>({ visiblity: true, modalContent: content }))
+  updateModal: (content, func) => set(()=>({ visiblity: true, modalContent: content, confirm: func })),
 }));
 
 export const useEditModalStore = create((set)=> ({
