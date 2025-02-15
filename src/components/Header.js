@@ -25,6 +25,16 @@ const Header = () => {
       >
         Home
       </NavLink>
+      <NavLink
+        className={({ isActive }) =>
+          isActive
+            ? "btn btn-dark me-3 my-auto"
+            : "btn btn-outline-dark me-3 my-auto"
+        }
+        to="/form"
+      >
+        Form
+      </NavLink>
       {loggedIn && (
         <div className="dropdown">
           <button
@@ -43,7 +53,7 @@ const Header = () => {
             </li>
             <li className="dropdown-item">
               <span className="fw-bold">FullName: </span>
-              <span className="">{user.firstname + " " + user.lastname? user.firstname + user.lastname : "N/A"}</span>
+              <span className="">{user.firstname? user.firstname + " " + user.lastname : "N/A"}</span>
             </li>
             <li className="dropdown-item">
               <span className="fw-bold">Email: </span>
