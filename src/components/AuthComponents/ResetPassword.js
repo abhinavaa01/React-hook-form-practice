@@ -85,7 +85,7 @@ const ResetPassword = () => {
 
   return (
     <div className="d-flex">
-      <div className="bg-white shadow mx-auto col-8 col-md-6 fixed-max-width my-5 p-3 rounded-3">
+      <div className="bg-white shadow mx-auto col-11 col-md-8 col-lg-6 fixed-max-width my-5 p-3 rounded-3">
         <div id="chooseExisting" className="d-flex justify-content-center mb-2">
           <h3>Reset Password</h3>
         </div>
