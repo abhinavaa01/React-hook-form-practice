@@ -1,6 +1,6 @@
 import React from "react";
 import { Modal } from "react-bootstrap";
-import { useModalStore } from "../zustand/store";
+import { useMessageStore, useModalStore } from "../zustand/store";
 import { jsonApi } from "../service";
 
 const ConfirmModal = () => {
@@ -8,19 +8,19 @@ const ConfirmModal = () => {
   const content = useModalStore((state) => state.modalContent);
   const hide = useModalStore((state) => state.hideModal);
   const confirm = useModalStore((state) => state.confirm);
+  const success = useMessageStore((state) => state.success);
+  const failure = useMessageStore((state) => state.failure);
 
   const confirmHandler = () => {
     jsonApi
       .deleteTodo(content.data.id)
       .then((res) => {
-        console.log(res);
-        console.log("Todo Deleted from server Successfully !");
+        success("Todo Deleted from server Successfully !");
         confirm(content.data);
       })
       .catch((err) => {
         confirm(content.data);
-        console.log(err);
-        console.log(err.status);
+        failure(err.message? err.message : "Failed to delete Todo");
       });
     hide({
       message: content.successMsg ? content.successMsg : "Successfull",

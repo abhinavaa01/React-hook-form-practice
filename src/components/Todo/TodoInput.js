@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useTodoStore } from "../../zustand/store";
+import { useMessageStore, useTodoStore } from "../../zustand/store";
 import { useForm } from "react-hook-form";
 import ImagePicker from "./ImagePicker";
 import { jsonApi } from "../../service/index.js";
@@ -9,6 +9,7 @@ const TodoInput = () => {
   const { addTodo } = useTodoStore();
   const [selectedImage, setSelectedImage] = useState("");
   const [clearImage, setClearImage] = useState(false);
+  const success = useMessageStore((state) => state.success);
   const {
     register,
     handleSubmit,
@@ -29,7 +30,8 @@ const TodoInput = () => {
 
     // save the todo in the database
     jsonApi.storeNewTodo(todoObj).then((res)=> {
-      alert("Todo Added Successfully");
+      // alert("Todo Added Successfully");
+      success("Todo Added Successfully");
     }).catch((err)=> {
       alert("Failed to Add Todo");
     });

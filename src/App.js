@@ -4,6 +4,7 @@ import Login from "./components/AuthComponents/Login";
 import Header from "./components/Header";
 import ResetPassword from "./components/AuthComponents/ResetPassword";
 import Form from "./components/Form";
+import Toasts from "./components/Toasts";
 
 function App() {
   return (
@@ -14,8 +15,8 @@ function App() {
         <Route path="/form" element={<Form />}></Route>
         <Route path="/login" element={<Login />}></Route>
         <Route path="/resetpassword" element={<ResetPassword />}></Route>
-        
       </Routes>
+      <Toasts />
     </BrowserRouter>
   );
 }

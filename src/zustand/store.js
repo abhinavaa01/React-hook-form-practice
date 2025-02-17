@@ -51,3 +51,30 @@ export const useEditModalStore = create((set)=> ({
   },
   updateModal: (content) => set(()=>({ visiblity: true, modalContent: content }))
 }));
+
+export const useMessageStore = create((set)=> ({
+  successMessage: "",
+  errorMessage: "",
+  loadingMessage: "",
+  success: (message) => {
+    set(()=>({ successMessage: message }));
+
+    setTimeout(() => {
+      set(()=>({ successMessage: "" }));
+    }, 4000);
+  },
+  failure: (message) => {
+    set(()=>({ errorMessage: message }));
+
+    setTimeout(() => {
+      set(()=>({ errorMessage: "" }));
+    }, 4000);
+  },
+  loading: (status) => {
+    set(()=>({ successMessage: "", errorMessage: "", loading: status }));
+
+    setTimeout(() => {
+      set(()=>({ successMessage: "", errorMessage: "Request Timeout", loading: false }));
+    }, 15000);
+  }
+}));
