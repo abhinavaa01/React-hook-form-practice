@@ -1,5 +1,10 @@
 import React from "react";
-import { useEditModalStore, useModalStore, useTodoStore } from "../../zustand/store";
+import "../../index.css";
+import {
+  useEditModalStore,
+  useModalStore,
+  useTodoStore,
+} from "../../zustand/store";
 
 const Todo = ({ data, successFunc, loadingFunc, failureFunc }) => {
   const toggleCheck = useTodoStore((state) => state.toggleTodo);
@@ -21,7 +26,14 @@ const Todo = ({ data, successFunc, loadingFunc, failureFunc }) => {
   };
 
   const deleteHandler = (e) => {
-    delConfirm({title : "Delete Todo", text: "Are you sure you want to delete this todo ?", data: data}, delTodo);
+    delConfirm(
+      {
+        title: "Delete Todo",
+        text: "Are you sure you want to delete this todo ?",
+        data: data,
+      },
+      delTodo
+    );
     // successFunc("Todo deleted Successfully !");
   };
 
@@ -34,13 +46,38 @@ const Todo = ({ data, successFunc, loadingFunc, failureFunc }) => {
           checked={data.isCompleted}
           onChange={completedHandler}
         />
-        <div className={data.isCompleted?"text-decoration-line-through text-muted":""}>{data.text}</div>
+        <div
+          className={
+            data.isCompleted ? "text-decoration-line-through text-muted" : ""
+          }
+        >
+          {data.text}
+        </div>
       </div>
       <div className="input-group d-flex col-12 justify-content-end">
-        <span className={data.isCompleted? "btn btn-sm btn-outline-secondary disabled" : "btn btn-sm btn-outline-secondary"} role="button" onClick={editHandler} disabled={data.isCompleted}>
+        {data.image ? <img src={data.image} className="todo-attachment-img me-auto rounded-2 m-2" /> : null}
+        <span
+          className={
+            data.isCompleted
+              ? "btn btn-sm h-min-content mt-auto btn-outline-secondary disabled"
+              : "btn btn-sm h-min-content mt-auto btn-outline-secondary"
+          }
+          role="button"
+          onClick={editHandler}
+          disabled={data.isCompleted}
+        >
           Edit
         </span>
-        <span className={data.isCompleted? "btn btn-sm btn-outline-danger disabled" : "btn btn-sm btn-outline-danger"} role="button" onClick={deleteHandler} disabled={data.isCompleted}>
+        <span
+          className={
+            data.isCompleted
+              ? "btn btn-sm h-min-content mt-auto btn-outline-danger disabled"
+              : "btn btn-sm h-min-content mt-auto btn-outline-danger"
+          }
+          role="button"
+          onClick={deleteHandler}
+          disabled={data.isCompleted}
+        >
           Delete
         </span>
       </div>

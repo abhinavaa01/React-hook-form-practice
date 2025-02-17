@@ -23,3 +23,10 @@ code {
 .fixed-max-width {
   max-width: 1200px !important;
 }
+.todo-attachment-img {
+  width: 100px;
+  height: auto;
+}
+.h-min-content {
+  height: min-content !important;
+}

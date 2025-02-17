@@ -5,6 +5,8 @@ import ImagePicker from "./ImagePicker";
 
 const TodoInput = () => {
   const { addTodo } = useTodoStore();
+  const [selectedImage, setSelectedImage] = useState("");
+  const [clearImage, setClearImage] = useState(false);
   const {
     register,
     handleSubmit,
@@ -13,12 +15,22 @@ const TodoInput = () => {
   } = useForm();
 
   const addTodoHandler = (data) => {
+    if (selectedImage !== "") console.log("Image string success");
     addTodo({
       id: Math.floor(Math.random() * 1000),
       text: data.todoText,
+      image: selectedImage,
       isCompleted: false,
     });
+    setClearImage(true);
     setValue("todoText", "");
+    setTimeout(() => {
+      setClearImage(false);
+    }, 500);
+  };
+
+  const setImageString = (imageString) => {
+    setSelectedImage(imageString);
   };
   return (
     <form
@@ -51,7 +63,7 @@ const TodoInput = () => {
         ADD
       </button>
       <div className="container">
-        {/* <ImagePicker /> */}
+        <ImagePicker handleImage={setImageString} clearImage={clearImage} />
       </div>
     </form>
   );

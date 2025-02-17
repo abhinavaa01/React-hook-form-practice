@@ -1,12 +1,31 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from "react";
 
-const ImagePicker = () => {
+const ImagePicker = (props) => {
+  const { handleImage, clearImage } = props;
   const [selectedFile, setSelectedFile] = useState(null);
   const [base64Image, setBase64Image] = useState(null);
-  const [previewURL, setPreviewURL] = useState(null); // For previewing before conversion
+  const [previewURL, setPreviewURL] = useState(null);
+  const [saveAgreement, setSaveAgreement] = useState(false);
+  const imageUploadRef = useRef(null);
+
+  useEffect(() => {
+    if (saveAgreement && base64Image) {
+      console.log("Image saved with todo");
+      handleImage(base64Image);
+    }
+  }, [base64Image, saveAgreement]);
+
+  useEffect(()=> {
+    console.log(clearImage);
+    if (clearImage) {
+      setSaveAgreement(false);
+      setSelectedFile(null);
+      handleImageChange(null);
+    }
+  }, [clearImage]);
 
   const handleImageChange = (event) => {
-    const file = event.target.files[0];
+    const file = event?.target.files[0];
 
     if (file) {
       setSelectedFile(file);
@@ -26,44 +45,59 @@ const ImagePicker = () => {
       };
       base64Reader.readAsDataURL(file);
     } else {
-        setSelectedFile(null);
-        setBase64Image(null);
-        setPreviewURL(null);
+      setSelectedFile(null);
+      setBase64Image(null);
+      setPreviewURL(null);
     }
   };
 
-  const handleSave = () => {
-    if (base64Image) {
-      // Here you would typically send the base64Image to your backend
-      // or store it in your application's state (e.g., using Zustand, Context, etc.)
-      console.log("Base64 Image:", base64Image);
-      alert('Image saved (check console)');
+  // const handleSave = () => {
+  //   if (base64Image) {
+  //     // Here you would typically send the base64Image to your backend
+  //     // or store it in your application's state (e.g., using Zustand, Context, etc.)
 
-    } else {
-        alert('No image to save')
-    }
-  };
+  //   } else {
+  //       alert('No image to save')
+  //   }
+  // };
 
   return (
     <div>
-      <input type="file" accept="image/*" onChange={handleImageChange} />
+      <input
+        type="file"
+        accept="image/*"
+        ref={imageUploadRef}
+        onChange={handleImageChange}
+        className="my-2"
+      />
 
       {previewURL && (
         <div>
           <h2>Image Preview:</h2>
-          <img src={previewURL} alt="Image Preview" style={{ maxWidth: '100px' }} />
+          <img
+            src={previewURL}
+            alt="Image Preview"
+            style={{ maxWidth: "100px" }}
+          />
         </div>
       )}
 
       {base64Image && (
-        <div>
-          <div>Base64 Representation (Check Console):</div>
-          {/* You can display a truncated version for demonstration */}
-          {/* <p>{base64Image.slice(0, 200)}...</p> */}
+        <div className="form-group form-check my-2">
+          <input
+            type="checkbox"
+            checked={saveAgreement}
+            onChange={(e) => setSaveAgreement(!saveAgreement)}
+            className="form-check-input"
+            id="agreement"
+          />
+          <label className="form-check-label" htmlFor="agreement">
+            Save Image with Todo
+          </label>
         </div>
       )}
     </div>
   );
-}
+};
 
 export default ImagePicker;
