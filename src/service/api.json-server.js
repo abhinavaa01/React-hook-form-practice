@@ -3,7 +3,7 @@ const userEmail = JSON.parse(localStorage.getItem("auth-storage"))?.state.userDa
 
 export const storeNewTodo = async (todo) => {
     try {
-        const apiResponse = await fetch(apiUrl + `userdata/${userEmail}/todos`, {
+        const apiResponse = await fetch(apiUrl + `todos`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -31,7 +31,7 @@ export const storeNewTodo = async (todo) => {
 
 export const getAllTodos = async () => {
     try {
-        const apiResponse = await fetch(apiUrl + `userdata/${userEmail}/todos`);
+        const apiResponse = await fetch(apiUrl + `todos` +`?userEmail=${userEmail}`);
 
         if (!apiResponse.ok) {
             const errorText = await apiResponse.text();
@@ -54,7 +54,7 @@ export const getAllTodos = async () => {
 export const updateTodo = async (todo) => {
     try {
         const apiResponse = await fetch(
-            apiUrl + `userdata/${userEmail}/todos/${todo.id}`,
+            apiUrl + `todos/${todo.id}`,
             {
                 method: "PUT",
                 headers: {
@@ -85,7 +85,7 @@ export const updateTodo = async (todo) => {
 export const deleteTodo = async (todoId) => {
     try {
         const apiResponse = await fetch(
-            apiUrl + `userdata/${userEmail}/todos/${todoId}`,
+            apiUrl + `todos/${todoId}`,
             {
                 method: "DELETE",
             }

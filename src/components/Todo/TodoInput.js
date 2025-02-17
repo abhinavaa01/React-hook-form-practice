@@ -3,6 +3,7 @@ import { useTodoStore } from "../../zustand/store";
 import { useForm } from "react-hook-form";
 import ImagePicker from "./ImagePicker";
 import { jsonApi } from "../../service/index.js";
+const userEmail = JSON.parse(localStorage.getItem("auth-storage"))?.state.userData.email;
 
 const TodoInput = () => {
   const { addTodo } = useTodoStore();
@@ -21,12 +22,17 @@ const TodoInput = () => {
       text: data.todoText,
       image: selectedImage,
       isCompleted: false,
+      userEmail: userEmail || ""
     }
     // Add Todo in the store
     addTodo(todoObj);
 
     // save the todo in the database
-    jsonApi.storeNewTodo(todoObj);
+    jsonApi.storeNewTodo(todoObj).then((res)=> {
+      alert("Todo Added Successfully");
+    }).catch((err)=> {
+      alert("Failed to Add Todo");
+    });
 
     // Clear the input field
     setClearImage(true);

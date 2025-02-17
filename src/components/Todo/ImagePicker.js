@@ -34,7 +34,7 @@ const ImagePicker = (props) => {
       const reader = new FileReader();
       reader.onloadend = () => {
         setPreviewURL(reader.result);
-        console.log(previewURL);
+        // console.log(previewURL);
       };
       reader.readAsDataURL(file);
 
