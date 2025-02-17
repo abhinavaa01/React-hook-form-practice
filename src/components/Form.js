@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { DevTool } from "@hookform/devtools";
 import { useState } from "react";
-import { authJsonApi } from "../service.js";
+import { authJsonApi } from "../service";
 import { useAuthStore } from "../zustand/store";
 
 const Form = () => {

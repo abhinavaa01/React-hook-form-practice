@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { sendResetPasswordLink } from "../../service.js/auth.firebase";
-import { authJsonApi } from "../../service.js/index.js";
+import { sendResetPasswordLink } from "../../service/auth.firebase";
+import { authJsonApi } from "../../service/index.js";
 import { useAuthStore } from "../../zustand/store.js";
 
 const ResetPassword = () => {

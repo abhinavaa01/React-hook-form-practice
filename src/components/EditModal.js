@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { Modal } from "react-bootstrap";
 import { useEditModalStore, useTodoStore } from "../zustand/store";
 import { useForm } from "react-hook-form";
+import { jsonApi } from "../service/index.js";
 
 const EditModal = () => {
   const show = useEditModalStore((state) => state.visiblity);
@@ -23,12 +24,22 @@ const EditModal = () => {
   }, [content]);
 
   const editTodoHandler = (data) => {
+    // declaring new Todo object
     const newTodo = {
+      image: content?.data?.image,
       id: content?.data?.id,
       isCompleted: content?.data?.isCompleted,
       text: data.todoText,
     };
+
+    // calling editTodo function from store
     editTodoFunc(newTodo);
+
+    // Saving the change on the server
+    jsonApi.updateTodo(newTodo);
+
+
+    // clearing the input field
     setValue("todoText", "");
     hide({
       message: content.successMsg ? content.successMsg : "Successfull",

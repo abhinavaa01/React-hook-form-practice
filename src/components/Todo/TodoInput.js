@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useTodoStore } from "../../zustand/store";
 import { useForm } from "react-hook-form";
 import ImagePicker from "./ImagePicker";
+import { jsonApi } from "../../service/index.js";
 
 const TodoInput = () => {
   const { addTodo } = useTodoStore();
@@ -15,13 +16,19 @@ const TodoInput = () => {
   } = useForm();
 
   const addTodoHandler = (data) => {
-    if (selectedImage !== "") console.log("Image string success");
-    addTodo({
+    const todoObj = {
       id: Math.floor(Math.random() * 1000),
       text: data.todoText,
       image: selectedImage,
       isCompleted: false,
-    });
+    }
+    // Add Todo in the store
+    addTodo(todoObj);
+
+    // save the todo in the database
+    jsonApi.storeNewTodo(todoObj);
+
+    // Clear the input field
     setClearImage(true);
     setValue("todoText", "");
     setTimeout(() => {

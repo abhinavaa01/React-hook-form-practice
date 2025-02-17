@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { authCustomApi, authJsonApi } from "../../service.js";
+import { authCustomApi, authJsonApi } from "../../service";
 import { useAuthStore } from "../../zustand/store.js";
 
 const ExistingLogin = () => {
