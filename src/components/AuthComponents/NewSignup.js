@@ -63,7 +63,7 @@ const NewSignup = () => {
       password: data.password,
     }
     authJsonApi.signUp(dataToSave).then((result)=> {
-      console.log(result);
+      // console.log(result);
       saveLogin(result);
       success("Signed Up as : " + data.email);
     }).catch((errmsg)=> {

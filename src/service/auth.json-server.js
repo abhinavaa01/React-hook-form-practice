@@ -17,7 +17,7 @@ export const login = async (email, pass) => {
     const users = await response.json(); // Await response.json()
 
     if (users.length > 0) {
-      console.log(users[0]);
+      // console.log(users[0]);
       const storageUserData = {
         ...users[0],
         isloggedIn: true,
@@ -100,7 +100,7 @@ export const checkApiResponse = async () => {
 
     const responseData = await response.json(); // Parse JSON response
 
-    console.log("API Response:", responseData); // Log the successful response data
+    // console.log("API Response:", responseData); // Log the successful response data
     return responseData; // Return the response data if needed
   } catch (error) {
     console.error("Error checking API:", error);

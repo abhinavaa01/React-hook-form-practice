@@ -18,7 +18,7 @@ const Todo = ({ data, successFunc, loadingFunc, failureFunc }) => {
 
   const editHandler = (e) => {
     e.preventDefault();
-    console.log("edit clicked");
+    // console.log("edit clicked");
     editModalContent({
       title: "Edit Todo",
       data: data,

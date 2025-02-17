@@ -61,7 +61,7 @@ const ExistingLogin = () => {
     authJsonApi
       .login(data.email, data.password)
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         success("Logged in as : " + data.email);
         saveLogin(res);
       })

@@ -10,13 +10,12 @@ const ImagePicker = (props) => {
 
   useEffect(() => {
     if (saveAgreement && base64Image) {
-      console.log("Image saved with todo");
+      // console.log("Image saved with todo");
       handleImage(base64Image);
     }
   }, [base64Image, saveAgreement]);
 
   useEffect(()=> {
-    console.log(clearImage);
     if (clearImage) {
       setSaveAgreement(false);
       setSelectedFile(null);

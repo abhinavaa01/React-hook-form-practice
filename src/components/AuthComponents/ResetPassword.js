@@ -59,7 +59,7 @@ const ResetPassword = () => {
     // console.log(data);
     sendResetPasswordLink(data.email)
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         success("Password reset link sent to your email successfully!");
       })
       .catch((err) => {
