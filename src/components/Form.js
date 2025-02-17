@@ -1,4 +1,3 @@
-import "../App.css";
 import { useForm } from "react-hook-form";
 import { DevTool } from "@hookform/devtools";
 import { useState } from "react";

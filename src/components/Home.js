@@ -1,4 +1,3 @@
-import "../App.css";
 import TodoWrapper from "./Todo/TodoWrapper";
 
 const Home = () => {

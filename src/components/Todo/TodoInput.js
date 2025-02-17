@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useTodoStore } from "../../zustand/store";
 import { useForm } from "react-hook-form";
+import ImagePicker from "./ImagePicker";
 
 const TodoInput = () => {
   const { addTodo } = useTodoStore();
@@ -8,7 +9,7 @@ const TodoInput = () => {
     register,
     handleSubmit,
     formState: { touchedFields, errors, dirtyFields },
-    setValue
+    setValue,
   } = useForm();
 
   const addTodoHandler = (data) => {
@@ -49,6 +50,9 @@ const TodoInput = () => {
       >
         ADD
       </button>
+      <div className="container">
+        {/* <ImagePicker /> */}
+      </div>
     </form>
   );
 };
