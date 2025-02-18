@@ -16,7 +16,6 @@ const ExistingLogin = () => {
   const {
     register,
     handleSubmit,
-    watch,
     formState: { touchedFields, errors, dirtyFields },
     control,
   } = useForm();
