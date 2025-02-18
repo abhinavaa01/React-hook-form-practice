@@ -2,63 +2,45 @@ import React, { useEffect, useRef, useState } from "react";
 
 const ImagePicker = (props) => {
   const { handleImage, clearImage } = props;
-  const [selectedFile, setSelectedFile] = useState(null);
-  const [base64Image, setBase64Image] = useState(null);
   const [previewURL, setPreviewURL] = useState(null);
-  const [saveAgreement, setSaveAgreement] = useState(false);
   const imageUploadRef = useRef(null);
 
   useEffect(() => {
-    if (saveAgreement && base64Image) {
-      // console.log("Image saved with todo");
-      handleImage(base64Image);
-    }
-  }, [base64Image, saveAgreement]);
-
-  useEffect(()=> {
     if (clearImage) {
-      setSaveAgreement(false);
-      setSelectedFile(null);
-      handleImageChange(null);
+      resetImage();
     }
   }, [clearImage]);
+
+  const resetImage = () => {
+    setPreviewURL(null);
+    handleImage(null); // Clear the image in the parent component
+    if (imageUploadRef.current) {
+      imageUploadRef.current.value = ""; // Reset the file input
+    }
+  };
 
   const handleImageChange = (event) => {
     const file = event?.target.files[0];
 
     if (file) {
-      setSelectedFile(file);
-
-      // Preview the image before conversion (optional)
+      // Preview the image before conversion
       const reader = new FileReader();
       reader.onloadend = () => {
         setPreviewURL(reader.result);
-        // console.log(previewURL);
       };
       reader.readAsDataURL(file);
 
-      // Convert to Base64 (asynchronously)
+      // Convert to Base64
       const base64Reader = new FileReader();
       base64Reader.onload = (e) => {
-        setBase64Image(e.target.result);
+        handleImage(e.target.result);
       };
       base64Reader.readAsDataURL(file);
     } else {
-      setSelectedFile(null);
-      setBase64Image(null);
       setPreviewURL(null);
+      handleImage(null);
     }
   };
-
-  // const handleSave = () => {
-  //   if (base64Image) {
-  //     // Here you would typically send the base64Image to your backend
-  //     // or store it in your application's state (e.g., using Zustand, Context, etc.)
-
-  //   } else {
-  //       alert('No image to save')
-  //   }
-  // };
 
   return (
     <div>
@@ -80,20 +62,10 @@ const ImagePicker = (props) => {
           />
         </div>
       )}
-
-      {base64Image && (
-        <div className="form-group form-check my-2">
-          <input
-            type="checkbox"
-            checked={saveAgreement}
-            onChange={(e) => setSaveAgreement(!saveAgreement)}
-            className="form-check-input"
-            id="agreement"
-          />
-          <label className="form-check-label" htmlFor="agreement">
-            Save Image with Todo
-          </label>
-        </div>
+      {previewURL && (
+        <button type="button" className="btn btn-danger btn-sm my-2" onClick={resetImage}>
+          <i className="bi bi-trash me-2"></i>Remove Image
+        </button>
       )}
     </div>
   );
