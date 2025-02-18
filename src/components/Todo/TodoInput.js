@@ -50,7 +50,7 @@ const TodoInput = () => {
   return (
     <form
       id="todo-input-group"
-      className="input-group mb-3"
+      className="input-group mb-3 border-bottom border-2"
       onSubmit={handleSubmit(addTodoHandler)}
     >
       <input
