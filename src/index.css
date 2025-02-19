@@ -6,7 +6,6 @@
   font-family: "Source Sans Pro - bold";
   src: url(./fonts/SourceSansPro-Bold.ttf);
 }
-
 body {
   margin: 0;
   font-family: "Source Sans Pro", "Source Han Sans", sans-serif !important;
@@ -14,11 +13,6 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background: linear-gradient(to right, #C5426E, #642B73);
-}
-
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
 }
 .fixed-max-width {
   max-width: 1200px !important;
@@ -30,3 +24,4 @@ code {
 .h-min-content {
   height: min-content !important;
 }
+/*# sourceMappingURL=index.css.map */

@@ -10,6 +10,8 @@
     "ajv-keywords": "^3.5.2",
     "firebase": "^11.3.1",
     "json-server": "^1.0.0-beta.3",
+    "less": "^4.2.2",
+    "less-watcher": "^1.2.0",
     "react": "^18.3.1",
     "react-bootstrap": "^2.10.9",
     "react-dom": "^18.3.1",
@@ -21,7 +23,7 @@
     "zustand": "^5.0.3"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "concurrently --kill-others \"less-watch-compiler --config less-watcher.config.json\" \"react-scripts start\"",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
