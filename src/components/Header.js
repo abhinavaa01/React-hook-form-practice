@@ -1,11 +1,28 @@
 import { NavLink } from "react-router";
-import { useUniversalStore } from "../zustand/store.js";
+import { useMessageStore, useUniversalStore } from "../zustand/store.js";
+import { useEffect } from "react";
+import { jsonApi, todoUtils } from "../service/index.js";
 
 const Header = () => {
-  // const [user, setUser] = useState(authCustomApi.returnCurrentUser());
   const user = useUniversalStore((state) => state.userData);
+  const allTodos = useUniversalStore((state) => state.todos);
+  const setTodos = useUniversalStore((state) => state.setTodos);
   const isloggedIn = useUniversalStore((state) => state.isAuthenticated);
   const saveLogout = useUniversalStore((state) => state.setUser);
+  const { loading, success, failure } = useMessageStore();
+
+  useEffect(()=> {
+    if(isloggedIn) {
+      loading("Fetching Todos from your account...");
+      jsonApi.getAllTodos().then((todos) => {
+        const mergedTodos = todoUtils.mergeTodos(allTodos, todos);
+        setTodos(mergedTodos);
+        success("Todos fetched Successfully !");
+      }).catch((err) => {
+        failure(err.message? err.message : "Failed to fetch Todos !");
+      });
+    }
+  }, [isloggedIn]);
 
   const logOut = () => {
     saveLogout(null);

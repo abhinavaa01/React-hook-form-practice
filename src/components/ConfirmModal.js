@@ -24,10 +24,10 @@ const ConfirmModal = () => {
       .deleteTodo(content.data.id)
       .then((res) => {
         deleteLocally();
-        success("Todo Deleted from server Successfully !");
+        success("Todo Deleted from server and local storage Successfully !");
       })
       .catch((err) => {
-        failure(err.message? err.message + ", Deleting from local storage" : "Failed to delete Todo");
+        failure(err.message? err.message + ", Deleting from local storage" : "Failed to delete Todo, deleting from localStorage");
         deleteLocally();
       });
     hide();

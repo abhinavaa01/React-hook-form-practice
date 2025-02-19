@@ -15,3 +15,16 @@ export const toggleTodo = (todos, todo) => {
 export const addTodo = (todos, todo) => {
     return [...todos, todo];
 };
+
+
+export const mergeTodos = (todos, newTodos) => {
+    newTodos.forEach((todo)=> {
+        const index = todos.findIndex((t)=> t.id === todo.id);
+        if(index !== -1) {
+            todos[index] = todo;
+        } else {
+            todos.push(todo);
+        }
+    });
+    return todos;
+};
