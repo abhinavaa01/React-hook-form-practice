@@ -22,8 +22,6 @@ export const login = async (email, pass) => {
         ...users[0],
         isloggedIn: true,
       };
-      localStorage.setItem("isloggedIn", "true");
-      localStorage.setItem("authUser", JSON.stringify(storageUserData));
       return users[0]; // Or return the user object
     } else {
       throw new Error(
@@ -75,8 +73,6 @@ export const signUp = async (data) => {
       password: `Trying to steal password?`,
       isloggedIn: true,
     };
-    localStorage.setItem("isloggedIn", "true");
-    localStorage.setItem("authUser", JSON.stringify(storageUserData));
     return newUser;
   } catch (error) {
     console.error("Signup error:", error);

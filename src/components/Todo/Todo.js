@@ -13,7 +13,8 @@ const Todo = ({ data }) => {
   const delConfirm = useModalStore((state) => state.updateModal);
   const editModalContent = useEditModalStore((state) => state.updateModal);
 
-  const completedHandler = (e) => {
+  const todoToggleHandler = (e) => {
+    // e.preventDefault();
     const newTodo = { ...data, isCompleted: !data.isCompleted };
     const newTodos = todoUtils.toggleTodo(allTodos, data);
     jsonApi.updateTodo(newTodo).then((updatedTodo) => {
@@ -23,11 +24,14 @@ const Todo = ({ data }) => {
 
   const completeDeleteFunc = () => {
     const newTodos = todoUtils.removeTodo(allTodos, data);
-    jsonApi.deleteTodo(data).then((res) => {
-      setTodos(newTodos);
-    }).catch((err) => {
-      console.log(err);
-    });
+    jsonApi
+      .deleteTodo(data)
+      .then((res) => {
+        setTodos(newTodos);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const editHandler = (e) => {
@@ -40,15 +44,11 @@ const Todo = ({ data }) => {
   };
 
   const deleteHandler = (e) => {
-    delConfirm(
-      {
-        title: "Delete Todo",
-        text: "Are you sure you want to delete this todo ?",
-        data: data,
-      },
-      // delTodo
-      completeDeleteFunc()
-    );
+    delConfirm({
+      title: "Delete Todo",
+      text: "Are you sure you want to delete this todo ?",
+      data: data,
+    });
   };
 
   return (
@@ -58,7 +58,7 @@ const Todo = ({ data }) => {
           type="checkbox"
           className="me-2"
           checked={data.isCompleted}
-          onChange={completedHandler}
+          onChange={todoToggleHandler}
         />
         <div
           className={
@@ -69,7 +69,12 @@ const Todo = ({ data }) => {
         </div>
       </div>
       <div className="input-group d-flex col-12 justify-content-end">
-        {data.image ? <img src={data.image} className="todo-attachment-img me-auto rounded-2 m-2" /> : null}
+        {data.image ? (
+          <img
+            src={data.image}
+            className="todo-attachment-img me-auto rounded-2 m-2"
+          />
+        ) : null}
         <span
           className={
             data.isCompleted

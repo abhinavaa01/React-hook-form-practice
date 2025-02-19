@@ -1,26 +1,32 @@
 import React from "react";
 import { Modal } from "react-bootstrap";
-import { useMessageStore, useModalStore } from "../zustand/store";
-import { jsonApi } from "../service";
+import { useMessageStore, useModalStore, useUniversalStore } from "../zustand/store";
+import { jsonApi, todoUtils } from "../service";
 
 const ConfirmModal = () => {
+  const allTodos = useUniversalStore((state)=> state.todos);
+  const setTodos = useUniversalStore((state)=> state.setTodos);
   const show = useModalStore((state) => state.visiblity);
   const content = useModalStore((state) => state.modalContent);
   const hide = useModalStore((state) => state.hideModal);
-  const confirm = useModalStore((state) => state.confirm);
   const success = useMessageStore((state) => state.success);
   const failure = useMessageStore((state) => state.failure);
+
+  const deleteLocally = () => {
+    const newTodos = todoUtils.removeTodo(allTodos, content.data);
+    setTodos(newTodos);
+  }
 
   const confirmHandler = () => {
     jsonApi
       .deleteTodo(content.data.id)
       .then((res) => {
+        deleteLocally();
         success("Todo Deleted from server Successfully !");
-        confirm(content.data);
       })
       .catch((err) => {
-        confirm(content.data);
-        failure(err.message? err.message : "Failed to delete Todo");
+        failure(err.message? err.message + ", Deleting from local storage" : "Failed to delete Todo");
+        deleteLocally();
       });
     hide();
   };

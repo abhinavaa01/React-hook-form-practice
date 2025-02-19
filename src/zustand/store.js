@@ -2,13 +2,12 @@ import { create } from "zustand";
 import { persist } from 'zustand/middleware'
 
 export const useUniversalStore = create(persist((set)=> ({
-  // storage
   userData: {},
   isAuthenticated: false,
   todos: [],
 
   // functions
-  setUser: (user) => set(()=>({ user, isAuthenticated: user? true : false })),
+  setUser: (user) => set(()=>({ userData: user, isAuthenticated: user? true : false })),
   setTodos: (todos) => set(()=>({ todos })),
 
 }), {
@@ -18,10 +17,9 @@ export const useUniversalStore = create(persist((set)=> ({
 export const useModalStore = create((set)=> ({
   visiblity: false,
   modalContent: {},
-  confirm: {},
   showModal: (content) => set(()=>({ visiblity: true, modalContent: content })),
   hideModal:  () => set(()=>({ visiblity: false, modalContent: {}, confirm: {} })),
-  updateModal: (content, func) => set(()=>({ visiblity: true, modalContent: content, confirm: func })),
+  updateModal: (content) => set(()=>({ visiblity: true, modalContent: content })),
 }));
 
 export const useEditModalStore = create((set)=> ({

@@ -8,9 +8,7 @@ const Header = () => {
   const saveLogout = useUniversalStore((state) => state.setUser);
 
   const logOut = () => {
-    // localStorage.removeItem("authUser");
-    // localStorage.setItem("isloggedIn", 'false');
-    saveLogout();
+    saveLogout(null);
   };
 
   return (
