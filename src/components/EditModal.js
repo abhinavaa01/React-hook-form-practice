@@ -1,14 +1,16 @@
 import React, { useEffect } from "react";
 import { Modal } from "react-bootstrap";
-import { useEditModalStore, useTodoStore } from "../zustand/store";
+import { useEditModalStore, useMessageStore, useUniversalStore } from "../zustand/store";
 import { useForm } from "react-hook-form";
-import { jsonApi } from "../service/index.js";
+import { jsonApi, todoUtils } from "../service/index.js";
 
 const EditModal = () => {
+  const allTodos = useUniversalStore((state)=> state.todos);
+  const setTodos = useUniversalStore((state)=> state.setTodos);
   const show = useEditModalStore((state) => state.visiblity);
   const content = useEditModalStore((state) => state.modalContent);
   const hide = useEditModalStore((state) => state.hideModal);
-  const editTodoFunc = useTodoStore((state) => state.editTodo);
+  const failureFunc = useMessageStore((state)=> state.failure);
   const {
     register,
     handleSubmit,
@@ -33,10 +35,15 @@ const EditModal = () => {
     };
 
     // calling editTodo function from store
-    editTodoFunc(newTodo);
+    // editTodoFunc(newTodo);
 
     // Saving the change on the server
-    jsonApi.updateTodo(newTodo);
+    jsonApi.updateTodo(newTodo).then((res)=> {
+      const newTodos = todoUtils.editTodo(allTodos, res);
+      setTodos(newTodos);
+    }).catch((err)=> {
+
+    });
 
 
     // clearing the input field

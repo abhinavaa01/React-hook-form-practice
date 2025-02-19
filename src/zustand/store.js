@@ -15,15 +15,6 @@ export const useUniversalStore = create(persist((set)=> ({
   name: 'universal-storage',
 }));
 
-
-export const useTodoStore = create(persist((set)=> ({
-  todos: [{id: 1, text: 'Sample Todo', isCompleted: false}],
-  addTodo: (todo) => set((state)=> ({todos: [...state.todos, todo]})),
-  setTodos: (todos) => set(()=> ({todos})),
-}), {
-  name: 'todo-storage',
-}))
-
 export const useModalStore = create((set)=> ({
   visiblity: false,
   modalContent: {},

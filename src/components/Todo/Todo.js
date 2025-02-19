@@ -3,17 +3,31 @@ import "../../index.css";
 import {
   useEditModalStore,
   useModalStore,
-  useTodoStore,
+  useUniversalStore,
 } from "../../zustand/store";
+import { jsonApi, todoUtils } from "../../service";
 
-const Todo = ({ data, successFunc, loadingFunc, failureFunc }) => {
-  const toggleCheck = useTodoStore((state) => state.toggleTodo);
-  const delTodo = useTodoStore((state) => state.removeTodo);
+const Todo = ({ data }) => {
+  const setTodos = useUniversalStore((state) => state.setTodos);
+  const allTodos = useUniversalStore((state) => state.todos);
   const delConfirm = useModalStore((state) => state.updateModal);
   const editModalContent = useEditModalStore((state) => state.updateModal);
 
   const completedHandler = (e) => {
-    toggleCheck(data);
+    const newTodo = { ...data, isCompleted: !data.isCompleted };
+    const newTodos = todoUtils.toggleTodo(allTodos, data);
+    jsonApi.updateTodo(newTodo).then((updatedTodo) => {
+      setTodos(newTodos);
+    });
+  };
+
+  const completeDeleteFunc = () => {
+    const newTodos = todoUtils.removeTodo(allTodos, data);
+    jsonApi.deleteTodo(data).then((res) => {
+      setTodos(newTodos);
+    }).catch((err) => {
+      console.log(err);
+    });
   };
 
   const editHandler = (e) => {
@@ -32,9 +46,9 @@ const Todo = ({ data, successFunc, loadingFunc, failureFunc }) => {
         text: "Are you sure you want to delete this todo ?",
         data: data,
       },
-      delTodo
+      // delTodo
+      completeDeleteFunc()
     );
-    // successFunc("Todo deleted Successfully !");
   };
 
   return (

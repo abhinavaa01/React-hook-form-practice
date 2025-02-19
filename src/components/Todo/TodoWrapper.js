@@ -1,11 +1,7 @@
 import React, { useEffect, useState } from "react";
 import TodoInput from "./TodoInput";
 import Todo from "./Todo";
-import {
-  useEditModalStore,
-  useModalStore,
-  useTodoStore,
-} from "../../zustand/store";
+import { useUniversalStore } from "../../zustand/store";
 import EditModal from "../EditModal";
 import ConfirmModal from "../ConfirmModal";
 
@@ -15,8 +11,7 @@ const TodoWrapper = () => {
     successMessage: "",
     loading: false,
   });
-  const todos = useTodoStore((state) => state.todos);
-  const toggleTodo = useTodoStore((state) => state.toggleTodo);
+  const todos = useUniversalStore((state) => state.todos);
 
   const loading = (status) => {
     setMessages({ successMessage: "", errorMessage: "", loading: status });
@@ -71,16 +66,7 @@ const TodoWrapper = () => {
       </div>
       <div id="todos" className="d-flex flex-column">
         {todos.map((todo) => {
-          return (
-            <Todo
-              data={todo}
-              key={todo.id}
-              togglecheck={toggleTodo}
-              loadingFunc={loading}
-              successFunc={success}
-              failureFunc={failure}
-            />
-          );
+          return <Todo data={todo} key={todo.id} />;
         })}
       </div>
 

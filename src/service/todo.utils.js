@@ -11,3 +11,7 @@ export const removeTodo = (todos, todo) => {
 export const toggleTodo = (todos, todo) => {
     return todos.map((t)=> t.id === todo.id ? {...t, isCompleted: !t.isCompleted} : t);
 };
+
+export const addTodo = (todos, todo) => {
+    return [...todos, todo];
+};
