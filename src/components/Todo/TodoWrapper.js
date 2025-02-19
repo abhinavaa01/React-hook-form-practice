@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import TodoInput from "./TodoInput";
 import Todo from "./Todo";
 import { useUniversalStore } from "../../zustand/store";
-import EditModal from "../EditModal";
-import ConfirmModal from "../ConfirmModal";
+import EditModal from "../Modals/EditModal";
+import ConfirmModal from "../Modals/ConfirmModal";
 
 const TodoWrapper = () => {
   const [messages, setMessages] = useState({

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { sendResetPasswordLink } from "../../service/auth.firebase";
+import { sendResetPasswordLink } from "../../service/auth.firebase.js";
 import { authJsonApi } from "../../service/index.js";
 import { useUniversalStore } from "../../zustand/store.js";
 

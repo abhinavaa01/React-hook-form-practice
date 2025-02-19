@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import { Modal } from "react-bootstrap";
-import { useEditModalStore, useMessageStore, useUniversalStore } from "../zustand/store";
+import { useEditModalStore, useMessageStore, useUniversalStore } from "../../zustand/store.js";
 import { useForm } from "react-hook-form";
-import { jsonApi, todoUtils } from "../service/index.js";
+import { jsonApi, todoUtils } from "../../service";
 
 const EditModal = () => {
   const allTodos = useUniversalStore((state)=> state.todos);

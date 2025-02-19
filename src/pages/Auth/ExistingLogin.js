@@ -1,17 +1,24 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { authCustomApi, authJsonApi } from "../../service";
+import { authJsonApi } from "../../service/index.js";
 import { useUniversalStore } from "../../zustand/store.js";
 
-const NewSignup = () => {
+const ExistingLogin = () => {
   const [visiblePass, setVisiblity] = useState(() => false);
-  const saveLogin = useUniversalStore((state)=> state.setUser);
+  const saveLogin = useUniversalStore((state) => state.setUser);
   const userLoggedIn = useUniversalStore((state) => state.isAuthenticated);
-  const [messages, setMessages ] = useState({
+  const [messages, setMessages] = useState({
     successMessage: "",
     errormessage: "",
-    loading: false
-  })
+    loading: false,
+  });
+
+  const {
+    register,
+    handleSubmit,
+    formState: { touchedFields, errors, dirtyFields },
+    control,
+  } = useForm();
 
   const success = (msg) => {
     setMessages({
@@ -36,7 +43,7 @@ const NewSignup = () => {
           loading: false,
         });
       }
-    }, 10000);
+    }, 15000);
   };
 
   const failure = (msg) => {
@@ -47,45 +54,29 @@ const NewSignup = () => {
     });
   };
 
-  const {
-    register,
-    handleSubmit,
-    watch,
-    formState: { touchedFields, errors, dirtyFields },
-    control,
-  } = useForm();
-
-  const signUp = (data) => {
+  const login = (data) => {
     if (messages.loading) return;
     loading();
-    const dataToSave = {
-      email: data.email,
-      password: data.password,
-    }
-    authJsonApi.signUp(dataToSave).then((result)=> {
-      // console.log(result);
-      saveLogin(result);
-      success("Signed Up as : " + data.email);
-    }).catch((errmsg)=> {
-      failure(errmsg.message);
-    })
+    authJsonApi
+      .login(data.email, data.password)
+      .then((res) => {
+        // console.log(res);
+        success("Logged in as : " + data.email);
+        saveLogin(res);
+      })
+      .catch((err) => {
+        failure(err.message);
+      });
   };
 
   const toggleVisibility = (e) => {
     setVisiblity((prev) => !prev);
   };
 
-  const tempfunc = (e) => {
-    e.preventDefault();
-    authJsonApi.checkApiResponse().then((result)=>{
-      console.log("API response",result);
-    }).catch((err)=>err);
-  }
-
   return (
     <form
       action="#"
-      onSubmit={handleSubmit(signUp)}
+      onSubmit={handleSubmit(login)}
       className="needs-validation"
       noValidate
     >
@@ -135,15 +126,6 @@ const NewSignup = () => {
             name="password"
             {...register("password", {
               required: true,
-              min: {
-                value: 8,
-                message: "Minimum 8 characters required for a strong password",
-              },
-              pattern: {
-                value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,}$/,
-                message:
-                  "Password should be 8-24 characters and include at least 1 letter, 1 number and 1 special character!",
-              },
             })}
             aria-invalid={errors.password ? "true" : "false"}
             id="password"
@@ -156,50 +138,18 @@ const NewSignup = () => {
           >
             {visiblePass ? "🙈" : "👁"}
           </i>
-          <div className="invalid-feedback">
-            Password must contain at least one capital letter, one number, and
-            one special character. Should be minimum 8 characters long.
-          </div>
+          <div className="invalid-feedback">Password is required.</div>
         </div>
-      </div>
-      <div className="form-group p-1">
-        <label htmlFor="confirmPassword">Confirm Password</label>
-        <input
-          type="text"
-          className={
-            errors.confirmPassword
-              ? "form-control is-invalid"
-              : touchedFields.confirmPassword
-              ? dirtyFields.confirmPassword
-                ? "form-control is-valid"
-                : "form-control is-invalid"
-              : "form-control"
-          }
-          name="confirmPassword"
-          {...register("confirmPassword", {
-            required: true,
-            validate: (val) => {
-              if (watch("password") != val) {
-                return "Your passwords do not match";
-              }
-            },
-          })}
-          aria-invalid={errors.confirmPassword ? "true" : "false"}
-          id="confirmPassword"
-        />
-        <div className="invalid-feedback">Passwords do not match.</div>
       </div>
       {/* Submit Button */}
       <button
         type="submit"
-        onClick={handleSubmit(signUp)}
+        onClick={handleSubmit(login)}
         className="btn btn-primary col-12 mt-4 mb-2"
         disabled={messages.loading || userLoggedIn}
       >
-        {messages.loading ? "Loading... Please Wait" :"Sign Up"}
+        {messages.loading ? "Loading... Please Wait" : "Login"}
       </button>
-
-      {/* <button className="btn btn-dark" onClick={tempfunc}>Temp function</button> */}
 
       {messages.errormessage ? (
         <span className="text-danger" role="alert">
@@ -215,4 +165,4 @@ const NewSignup = () => {
   );
 };
 
-export default NewSignup;
+export default ExistingLogin;

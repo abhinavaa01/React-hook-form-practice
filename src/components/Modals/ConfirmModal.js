@@ -1,7 +1,7 @@
 import React from "react";
 import { Modal } from "react-bootstrap";
-import { useMessageStore, useModalStore, useUniversalStore } from "../zustand/store";
-import { jsonApi, todoUtils } from "../service";
+import { useMessageStore, useModalStore, useUniversalStore } from "../../zustand/store";
+import { jsonApi, todoUtils } from "../../service";
 
 const ConfirmModal = () => {
   const allTodos = useUniversalStore((state)=> state.todos);
