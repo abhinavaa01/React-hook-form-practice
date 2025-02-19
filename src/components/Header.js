@@ -1,11 +1,11 @@
 import { NavLink } from "react-router";
-import { useAuthStore } from "../zustand/store.js";
+import { useUniversalStore } from "../zustand/store.js";
 
 const Header = () => {
   // const [user, setUser] = useState(authCustomApi.returnCurrentUser());
-  const user = useAuthStore((state) => state.userData);
-  const loggedIn = useAuthStore((state) => state.isAuthenticated);
-  const saveLogout = useAuthStore((state) => state.saveLogout);
+  const user = useUniversalStore((state) => state.userData);
+  const isloggedIn = useUniversalStore((state) => state.isAuthenticated);
+  const saveLogout = useUniversalStore((state) => state.setUser);
 
   const logOut = () => {
     // localStorage.removeItem("authUser");
@@ -35,7 +35,7 @@ const Header = () => {
       >
         Form
       </NavLink>
-      {loggedIn && (
+      {isloggedIn && (
         <div className="dropdown">
           <button
             className="btn btn-dark dropdown-toggle me-3 my-auto"
@@ -72,11 +72,11 @@ const Header = () => {
       )}
       <div id="authStateInHeader" className="me-3 my-auto d-none d-md-block">
         <span className="fw-bold">Auth State : </span>
-        {loggedIn
+        {isloggedIn
           ? "Logged in with email id (" + user.email + ")"
           : "Not logged in"}
       </div>
-      {loggedIn ? (
+      {isloggedIn ? (
         <button className="btn btn-dark my-auto ms-auto" onClick={logOut}>
           LOGOUT
         </button>

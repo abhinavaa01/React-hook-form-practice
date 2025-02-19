@@ -2,11 +2,11 @@ import { useForm } from "react-hook-form";
 import { DevTool } from "@hookform/devtools";
 import { useState } from "react";
 import { authJsonApi } from "../service";
-import { useAuthStore } from "../zustand/store";
+import { useUniversalStore } from "../zustand/store";
 
 const Form = () => {
     const [visiblePass, setVisiblity] = useState(false);
-    const savelogin = useAuthStore((state) => state.saveLogin);
+    const savelogin = useUniversalStore((state) => state.setUser);
     const [messages, setMessages] = useState({
       successMessage: "",
       errormessage: "",

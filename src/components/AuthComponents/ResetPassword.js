@@ -2,12 +2,12 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { sendResetPasswordLink } from "../../service/auth.firebase";
 import { authJsonApi } from "../../service/index.js";
-import { useAuthStore } from "../../zustand/store.js";
+import { useUniversalStore } from "../../zustand/store.js";
 
 const ResetPassword = () => {
   const [visiblePass, setVisiblity] = useState(() => false);
-  const saveLogin = useAuthStore((state) => state.saveLogin);
-  const user = useAuthStore((state) => state.userData);
+  const saveLogin = useUniversalStore((state) => state.setUser);
+  const user = useUniversalStore((state) => state.userData);
   const [messages, setMessages] = useState({
     successMessage: "",
     errormessage: "",

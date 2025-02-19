@@ -22,10 +22,7 @@ const ConfirmModal = () => {
         confirm(content.data);
         failure(err.message? err.message : "Failed to delete Todo");
       });
-    hide({
-      message: content.successMsg ? content.successMsg : "Successfull",
-      success: true,
-    });
+    hide();
   };
 
   return (

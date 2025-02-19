@@ -17,26 +17,6 @@ const TodoWrapper = () => {
   });
   const todos = useTodoStore((state) => state.todos);
   const toggleTodo = useTodoStore((state) => state.toggleTodo);
-  const confirmModalAfterMessage = useModalStore(
-    (state) => state.editModalAfterMessage
-  );
-  const editModalAfterMessage = useEditModalStore(
-    (state) => state.editModalAfterMessage
-  );
-
-  useEffect(() => { // These are to handle Success or error messages after modal closes
-    if (confirmModalAfterMessage?.message && confirmModalAfterMessage?.success) {
-      success(confirmModalAfterMessage?.message);
-    } else if (confirmModalAfterMessage?.message) {
-      failure(confirmModalAfterMessage?.message);
-    }
-
-    if (editModalAfterMessage?.message && editModalAfterMessage?.success) {
-      success(editModalAfterMessage?.message);
-    } else if (editModalAfterMessage?.message) {
-      failure(editModalAfterMessage?.message);
-    }
-  }, [confirmModalAfterMessage, editModalAfterMessage]);
 
   const loading = (status) => {
     setMessages({ successMessage: "", errorMessage: "", loading: status });

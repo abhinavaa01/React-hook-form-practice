@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { authCustomApi, authJsonApi } from "../../service";
-import { useAuthStore } from "../../zustand/store.js";
+import { authJsonApi } from "../../service";
+import { useUniversalStore } from "../../zustand/store.js";
 
 const ExistingLogin = () => {
   const [visiblePass, setVisiblity] = useState(() => false);
-  const saveLogin = useAuthStore((state) => state.saveLogin);
-  const userLoggedIn = useAuthStore((state) => state.isAuthenticated);
+  const saveLogin = useUniversalStore((state) => state.setUser);
+  const userLoggedIn = useUniversalStore((state) => state.isAuthenticated);
   const [messages, setMessages] = useState({
     successMessage: "",
     errormessage: "",

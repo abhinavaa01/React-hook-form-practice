@@ -2,11 +2,11 @@ import { useCallback, useEffect, useState } from "react";
 import ExistingLogin from "./ExistingLogin.js";
 import NewSignup from "./NewSignup.js";
 import { Link, useNavigate } from "react-router";
-import { useAuthStore } from "../../zustand/store.js";
+import { useUniversalStore } from "../../zustand/store.js";
 
 const Login = () => {
   const [existing, setExisting] = useState((prev) => true);
-  const user = useAuthStore((state) => state.userData);
+  const user = useUniversalStore((state) => state.userData);
   const navigate = useNavigate();
 
   useEffect(() => {

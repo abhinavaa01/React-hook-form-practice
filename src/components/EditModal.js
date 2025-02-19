@@ -41,10 +41,7 @@ const EditModal = () => {
 
     // clearing the input field
     setValue("todoText", "");
-    hide({
-      message: content.successMsg ? content.successMsg : "Successfull",
-      success: true,
-    });
+    hide();
   };
   return (
     <Modal show={show} onHide={hide} centered>
