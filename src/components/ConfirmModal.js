@@ -11,6 +11,7 @@ const ConfirmModal = () => {
   const hide = useModalStore((state) => state.hideModal);
   const success = useMessageStore((state) => state.success);
   const failure = useMessageStore((state) => state.failure);
+  const loading = useMessageStore((state) => state.loading);
 
   const deleteLocally = () => {
     const newTodos = todoUtils.removeTodo(allTodos, content.data);
@@ -18,6 +19,7 @@ const ConfirmModal = () => {
   }
 
   const confirmHandler = () => {
+    loading("Deleting Todo...");
     jsonApi
       .deleteTodo(content.data.id)
       .then((res) => {

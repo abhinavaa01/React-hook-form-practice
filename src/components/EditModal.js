@@ -11,6 +11,8 @@ const EditModal = () => {
   const content = useEditModalStore((state) => state.modalContent);
   const hide = useEditModalStore((state) => state.hideModal);
   const failureFunc = useMessageStore((state)=> state.failure);
+  const successFunc = useMessageStore((state)=> state.success);
+  const loadingFunc = useMessageStore((state)=> state.loading);
   const {
     register,
     handleSubmit,
@@ -26,6 +28,7 @@ const EditModal = () => {
   }, [content]);
 
   const editTodoHandler = (data) => {
+    loadingFunc("Updating Todo...");
     // declaring new Todo object
     const newTodo = {
       id: content?.data?.id,
@@ -41,8 +44,11 @@ const EditModal = () => {
     jsonApi.updateTodo(newTodo).then((res)=> {
       const newTodos = todoUtils.editTodo(allTodos, res);
       setTodos(newTodos);
+      successFunc("Todo Updated Successfully on both server and local storage !");
     }).catch((err)=> {
-
+      failureFunc(err.message? err.message + ", Editing in local Storage..." : "Failed to update Todo on server, updating in local storage...");
+      const newTodos = todoUtils.editTodo(allTodos, newTodo);
+      setTodos(newTodos);
     });
 
 
