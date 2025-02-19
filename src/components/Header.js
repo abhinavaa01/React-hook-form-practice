@@ -64,23 +64,23 @@ const Header = () => {
           <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton">
             <li className="dropdown-item">
               <span className="fw-bold">Username: </span>
-              <span className="">{user.username? user.username : "N/A"}</span>
+              <span className="">{user?.username? user.username : "N/A"}</span>
             </li>
             <li className="dropdown-item">
               <span className="fw-bold">FullName: </span>
-              <span className="">{user.firstname? user.firstname + " " + user.lastname : "N/A"}</span>
+              <span className="">{user?.firstname? user.firstname + " " + user.lastname : "N/A"}</span>
             </li>
             <li className="dropdown-item">
               <span className="fw-bold">Email: </span>
-              <span className="">{user.email? user.email : "N/A"}</span>
+              <span className="">{user?.email? user.email : "N/A"}</span>
             </li>
             <li className="dropdown-item">
               <span className="fw-bold">Phone: </span>
-              <span className="">{user.phone? user.phone : "N/A"}</span>
+              <span className="">{user?.phone? user.phone : "N/A"}</span>
             </li>
             <li className="dropdown-item">
               <span className="fw-bold">Zip Code: </span>
-              <span className="">{user.zip? user.zip : "N/A"}</span>
+              <span className="">{user?.zip? user.zip : "N/A"}</span>
             </li>
           </ul>
         </div>

@@ -7,7 +7,7 @@ import { jsonApi, todoUtils } from "../../service/index.js";
 const TodoInput = () => {
   const allTodos = useUniversalStore((state) => state.todos);
   const setTodos = useUniversalStore((state) => state.setTodos);
-  const userEmail = useUniversalStore((state)=> state.userData).email;
+  const userEmail = useUniversalStore((state)=> state.userData)?.email;
   const [selectedImage, setSelectedImage] = useState("");
   const [clearImage, setClearImage] = useState(false);
   const success = useMessageStore((state) => state.success);

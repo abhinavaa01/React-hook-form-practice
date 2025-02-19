@@ -1,5 +1,5 @@
 const apiUrl = process.env.REACT_APP_JSONServerAPIUrl;
-const userEmail = JSON.parse(localStorage.getItem("auth-storage"))?.state.userData.email;
+const userEmail = JSON.parse(localStorage.getItem("universal-storage"))?.state.userData.email;
 
 export const storeNewTodo = async (todo) => {
     try {

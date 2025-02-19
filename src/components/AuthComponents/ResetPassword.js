@@ -119,7 +119,7 @@ const ResetPassword = () => {
               })}
               aria-invalid={errors.email ? "true" : "false"}
               id="email"
-              placeholder={user.email? user.email : "Enter your email"}
+              placeholder={user?.email? user.email : "Enter your email"}
             />
             <div className="invalid-feedback">
               Please enter a valid email address.
