@@ -59,9 +59,9 @@ const Toasts = () => {
         data-bs-animation="true"
       >
         <div className="d-flex">
-          <div className="toast-body">
-            <span className="spinner-border spinner-border-sm text-warning"></span>
-            {loadingMsg? loadingMsg : "Loading..."}
+          <div className="toast-body d-flex flex-row">
+            <span className="spinner-border spinner-border-sm text-secondary my-auto"></span>
+            <span className="my-auto ms-1">{loadingMsg? loadingMsg : "Loading..."}</span>
             </div>
           <button
             type="button"
