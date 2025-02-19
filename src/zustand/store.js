@@ -38,24 +38,24 @@ export const useMessageStore = create((set)=> ({
   errorMessage: "",
   loadingMessage: "",
   success: (message) => {
-    set(()=>({ successMessage: message }));
+    set(()=>({ successMessage: message, loadingMessage: "" }));
 
     setTimeout(() => {
       set(()=>({ successMessage: "" }));
     }, 4000);
   },
   failure: (message) => {
-    set(()=>({ errorMessage: message }));
+    set(()=>({ errorMessage: message, loadingMessage: "" }));
 
     setTimeout(() => {
       set(()=>({ errorMessage: "" }));
     }, 4000);
   },
   loading: (status) => {
-    set(()=>({ successMessage: "", errorMessage: "", loading: status }));
+    set(()=>({ loadingMessage: status }));
 
     setTimeout(() => {
-      set(()=>({ successMessage: "", errorMessage: "Request Timeout", loading: false }));
-    }, 15000);
+      set(()=>({ successMessage: "", errorMessage: "", loadingMessage: "" }));
+    }, 5000);
   }
 }));

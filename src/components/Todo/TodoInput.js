@@ -3,14 +3,16 @@ import { useMessageStore, useUniversalStore } from "../../zustand/store";
 import { useForm } from "react-hook-form";
 import ImagePicker from "./ImagePicker";
 import { jsonApi, todoUtils } from "../../service/index.js";
-const userEmail = JSON.parse(localStorage.getItem("auth-storage"))?.state
-  .userData.email;
 
 const TodoInput = () => {
-  const allTodos = useUniversalStore((state)=> state.todos);
+  const allTodos = useUniversalStore((state) => state.todos);
+  const setTodos = useUniversalStore((state) => state.setTodos);
+  const userEmail = useUniversalStore((state)=> state.userData).email;
   const [selectedImage, setSelectedImage] = useState("");
   const [clearImage, setClearImage] = useState(false);
   const success = useMessageStore((state) => state.success);
+  const loadingStore = useMessageStore((state)=> state.loading);
+  
   const {
     register,
     handleSubmit,
@@ -19,6 +21,7 @@ const TodoInput = () => {
   } = useForm();
 
   const addTodoHandler = (data) => {
+    loadingStore("Saving todo on server please wait...");
     const todoObj = {
       text: data.todoText,
       image: selectedImage,
@@ -30,8 +33,9 @@ const TodoInput = () => {
     jsonApi
       .storeNewTodo(todoObj)
       .then((res) => {
-    // Get the new TodosArr
-    const newTodos = todoUtils.addTodo(allTodos,res);
+        // Get the new TodosArr
+        const newTodos = todoUtils.addTodo(allTodos, res);
+        setTodos(newTodos);
 
         // alert("Todo Added Successfully");
         success("Todo Added Successfully");

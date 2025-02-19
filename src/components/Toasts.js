@@ -49,9 +49,9 @@ const Toasts = () => {
         </div>
       </Toast>}
 
-      
+
       {loadingMsg && <Toast
-        show={errorMsg ? true : false}
+        show={loadingMsg ? true : false}
         className="toast align-items-center bg-warning my-2 bg-opacity-75"
         role="alert"
         aria-live="assertive"
