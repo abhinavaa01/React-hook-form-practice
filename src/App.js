@@ -1,10 +1,10 @@
 import { BrowserRouter, Route, Routes } from "react-router";
-import Home from "./components/Home";
 import Login from "./components/AuthComponents/Login";
 import Header from "./components/Header";
 import ResetPassword from "./components/AuthComponents/ResetPassword";
 import Form from "./components/Form";
 import Toasts from "./components/Toasts";
+import Home from "./pages/Home";
 
 function App() {
   return (

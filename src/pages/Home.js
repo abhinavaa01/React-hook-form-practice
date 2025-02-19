@@ -1,4 +1,4 @@
-import TodoWrapper from "./Todo/TodoWrapper";
+import TodoWrapper from "../components/Todo/TodoWrapper";
 
 const Home = () => {
   return (
