@@ -17,7 +17,7 @@ const Header = () => {
       jsonApi.getAllTodos().then((todos) => {
         const mergedTodos = todoUtils.mergeTodos(allTodos, todos);
         setTodos(mergedTodos);
-        success("Todos fetched Successfully !");
+        success("Todos fetched Successfully !" + " (" + todos.length + " Todos)");
       }).catch((err) => {
         failure(err.message? err.message : "Failed to fetch Todos !");
       });
