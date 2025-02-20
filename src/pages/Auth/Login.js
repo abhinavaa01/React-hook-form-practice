@@ -15,7 +15,7 @@ const Login = () => {
         navigate(-1);
       }, 3000);
     }
-  });
+  }, [user]);
 
   const toggleForm = useCallback((state) => {
     setExisting(state);

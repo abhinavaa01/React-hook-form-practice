@@ -32,9 +32,8 @@ const EditModal = () => {
     // declaring new Todo object
     const newTodo = {
       id: content?.data?.id,
-      isCompleted: content?.data?.isCompleted,
       text: data.todoText,
-      image: content?.data?.image,
+      ...content?.data
     };
 
     // calling editTodo function from store

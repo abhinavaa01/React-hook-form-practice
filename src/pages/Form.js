@@ -1,16 +1,19 @@
 import { useForm } from "react-hook-form";
 import { DevTool } from "@hookform/devtools";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { authJsonApi } from "../service";
 import { useUniversalStore } from "../zustand/store";
+import { useNavigate } from "react-router";
 
 const Form = () => {
+  const navigate = useNavigate();
   const [visiblePass, setVisiblity] = useState(false);
+  const isloggedIn = useUniversalStore((state) => state.isAuthenticated);
   const savelogin = useUniversalStore((state) => state.setUser);
   const [messages, setMessages] = useState({
     successMessage: "",
-    errormessage: "",
-    loading: false,
+    errorMessage: "",
+    loadingMessage: false,
   });
   const {
     register,
@@ -20,27 +23,35 @@ const Form = () => {
     control,
   } = useForm();
 
+  useEffect(()=> {
+    if (isloggedIn) {
+      setTimeout(() => {
+        navigate(-1);
+      }, 3000);
+    }
+  }, [isloggedIn])
+
   const success = (msg) => {
     setMessages({
-      errormessage: "",
+      errorMessage: "",
       successMessage: msg,
-      loading: false,
+      loadingMessage: false,
     });
   };
 
   const loading = () => {
     setMessages({
-      errormessage: "",
+      errorMessage: "",
       successMessage: "",
-      loading: true,
+      loadingMessage: true,
     });
 
     setTimeout(() => {
-      if (messages.loading) {
+      if (messages.loadingMessage) {
         setMessages({
-          errormessage: "Request Timeout, Please try again later.",
+          errorMessage: "Request Timeout, Please try again later.",
           successMessage: "",
-          loading: false,
+          loadingMessage: false,
         });
       }
     }, 10000);
@@ -48,14 +59,14 @@ const Form = () => {
 
   const failure = (msg) => {
     setMessages({
-      errormessage: msg,
+      errorMessage: msg,
       successMessage: "",
-      loading: false,
+      loadingMessage: false,
     });
   };
 
   const onSubmit = (data) => {
-    if (messages.loading) return;
+    if (messages.loadingMessage) return;
     loading();
     authJsonApi
       .signUp(data)
@@ -403,20 +414,24 @@ const Form = () => {
               }
               id="zip"
               name="zip"
-              {...register("zip", { required: "Please enter your postal/zip code.",
-                min: {
-                  value : 6,
-                  message: "Too small to be a pin/code"
+              {...register("zip", {
+                required: "Please enter your postal/zip code.",
+                minLength: {
+                  value: 6,
+                  message: "Too small to be a pin/code",
+                },
+                maxLength: {
+                  value: 6,
+                  message: "Too Large to be a pin/code",
                 },
                 pattern: {
                   value: /^(0|[1-9]\d*)(\.\d+)?$/,
                   message: "Only numbers allowed",
-                },})}
+                },
+              })}
               aria-invalid={errors.zip ? "true" : "false"}
             />
-            <div className="invalid-feedback">
-              {errors.zip?.message}
-            </div>
+            <div className="invalid-feedback">{errors.zip?.message}</div>
           </div>
 
           <div className="form-group form-check">
@@ -443,10 +458,35 @@ const Form = () => {
           <button
             type="submit"
             className="mt-4 d-block w-100 btn btn-primary"
-            disabled={messages.loading}
+            disabled={messages.loadingMessage}
           >
-            {messages.loading ? "Loading... Please Wait" : "Create Account"}
+            {messages.loadingMessage
+              ? "Loading... Please Wait"
+              : "Create Account"}
           </button>
+
+          {messages.errorMessage ? (
+            <span className="text-danger" role="alert">
+              {messages.errorMessage}
+            </span>
+          ) : null}
+          {messages.successMessage ? (
+            <span className="text-success" role="alert">
+              {messages.successMessage}
+            </span>
+          ) : null}
+          {isloggedIn ? (
+            <div className="text-success d-flex" role="alert">
+              <div
+                className="spinner-border spinner-border-sm my-auto me-2"
+                role="status"
+              ></div>
+              <div className="my-auto">
+                Authenticated User found! Redirecting back in 3 seconds.
+              </div>
+              <br />
+            </div>
+          ) : null}
         </form>
       </div>
       <DevTool control={control} />
