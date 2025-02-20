@@ -2,6 +2,7 @@ import React from "react";
 import "../../index.css";
 import {
   useEditModalStore,
+  useMessageStore,
   useModalStore,
   useUniversalStore,
 } from "../../zustand/store";
@@ -12,26 +13,21 @@ const Todo = ({ data }) => {
   const allTodos = useUniversalStore((state) => state.todos);
   const delConfirm = useModalStore((state) => state.updateModal);
   const editModalContent = useEditModalStore((state) => state.updateModal);
+  const successFunc = useMessageStore((state) => state.success);
+  const failureFunc = useMessageStore((state) => state.failure);
+  const loadingFunc = useMessageStore((state) => state.loading);
 
   const todoToggleHandler = (e) => {
     // e.preventDefault();
     const newTodo = { ...data, isCompleted: !data.isCompleted };
     const newTodos = todoUtils.toggleTodo(allTodos, data);
-    jsonApi.updateTodo(newTodo).then((updatedTodo) => {
       setTodos(newTodos);
+    jsonApi.updateTodo(newTodo).then((updatedTodo) => {
+      successFunc("Todo Updated on server Successfully !");
+    }).catch((err) => {
+      failureFunc("Failed to update Todo on server ! Error: " + err.message? err.message : err);
+      console.error(err);
     });
-  };
-
-  const completeDeleteFunc = () => {
-    const newTodos = todoUtils.removeTodo(allTodos, data);
-    jsonApi
-      .deleteTodo(data)
-      .then((res) => {
-        setTodos(newTodos);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
   };
 
   const editHandler = (e) => {

@@ -97,10 +97,13 @@ const ExistingLogin = () => {
           {...register("email", {
             required: "Please enter a valid email address.",
             pattern: {
-              value:
-                /^[a-zA-Z0-9. !#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/,
+              value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
               message: "Please enter a valid email address.",
-            },
+            }, validate : {
+              checkEmail: (value) => {
+                return value === "" || value === undefined || value === null || value.length < 5 ? "Email is too short." : true;
+            }
+          }
           })}
           aria-invalid={errors.email ? "true" : "false"}
           id="email"
