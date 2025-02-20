@@ -4,9 +4,7 @@ const apiUrl = process.env.REACT_APP_JSONServerAPIUrl;
 export const login = async (email, pass) => {
   // Use async/await
   try {
-    const response = await fetch(
-      apiUrl + "users?email=" + email + "&password=" + pass
-    );
+    const response = await fetch(apiUrl + "users?email=" + email);
     if (!response.ok) {
       const errorText = await response.text();
       throw new Error(
@@ -16,16 +14,17 @@ export const login = async (email, pass) => {
 
     const users = await response.json(); // Await response.json()
 
-    if (users.length > 0) {
-      // console.log(users[0]);
-      const storageUserData = {
-        ...users[0],
-        isloggedIn: true,
-      };
-      return users[0]; // Or return the user object
+    if (users.length) {
+      if (users[0].password === pass) {
+        return users[0];
+      } else {
+        throw new Error(
+          "Wrong password! :- " + new Date().toLocaleTimeString()
+        ); // Throw an error
+      }
     } else {
       throw new Error(
-        "Invalid Login Credentials! :- " + new Date().toLocaleTimeString()
+        "No User Found with this email address ! :- " + new Date().toLocaleTimeString()
       ); // Throw an error
     }
   } catch (error) {
@@ -139,13 +138,15 @@ export const updateUserPassword = async (email, newPassword) => {
     if (!updateResponse.ok) {
       const errorText = await updateResponse.text();
       throw new Error(
-        `HTTP error ${updateResponse.status}: ${errorText || updateResponse.statusText}`
+        `HTTP error ${updateResponse.status}: ${
+          errorText || updateResponse.statusText
+        }`
       );
     }
 
     const updated = await updateResponse.json();
-    return updated; 
-  } catch (error){
+    return updated;
+  } catch (error) {
     console.error(error);
     throw error;
   }
