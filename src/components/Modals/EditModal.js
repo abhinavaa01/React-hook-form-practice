@@ -31,18 +31,16 @@ const EditModal = () => {
     loadingFunc("Updating Todo...");
     // declaring new Todo object
     const newTodo = {
-      id: content?.data?.id,
+      ...content?.data,
       text: data.todoText,
-      ...content?.data
     };
 
-    // calling editTodo function from store
-    // editTodoFunc(newTodo);
+    // updating in local storage
+      const newTodos = todoUtils.editTodo(allTodos, newTodo);
+      setTodos(newTodos);
 
     // Saving the change on the server
     jsonApi.updateTodo(newTodo).then((res)=> {
-      const newTodos = todoUtils.editTodo(allTodos, res);
-      setTodos(newTodos);
       successFunc("Todo Updated Successfully on both server and local storage !");
     }).catch((err)=> {
       failureFunc(err.message? err.message + ", Editing in local Storage..." : "Failed to update Todo on server, updating in local storage...");
