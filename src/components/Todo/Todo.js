@@ -64,7 +64,7 @@ const Todo = ({ data }) => {
           {data.text}
         </div>
       </div>
-      <div className="input-group d-flex col-12 justify-content-end">
+      <div className="input-group d-flex col-12 justify-content-end zero-index">
         {data.image ? (
           <img
             src={data.image}
