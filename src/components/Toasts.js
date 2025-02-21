@@ -19,7 +19,7 @@ const Toasts = () => {
         data-bs-animation="true"
       >
         <div className="d-flex">
-          <div className="toast-body">{successMsg}</div>
+          <div className="toast-body fw-bold text-white">{successMsg}</div>
           <button
             type="button"
             className="btn-close me-2 m-auto"
@@ -39,7 +39,7 @@ const Toasts = () => {
         data-bs-animation="true"
       >
         <div className="d-flex">
-          <div className="toast-body">{errorMsg}</div>
+          <div className="toast-body fw-bold text-white">{errorMsg}</div>
           <button
             type="button"
             className="btn-close me-2 m-auto"
@@ -59,7 +59,7 @@ const Toasts = () => {
         data-bs-animation="true"
       >
         <div className="d-flex">
-          <div className="toast-body d-flex flex-row">
+          <div className="toast-body fw-bold d-flex flex-row">
             <span className="spinner-border spinner-border-sm text-secondary my-auto"></span>
             <span className="my-auto ms-1">{loadingMsg? loadingMsg : "Loading..."}</span>
             </div>
