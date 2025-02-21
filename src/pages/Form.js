@@ -408,7 +408,7 @@ const Form = () => {
           <div className="form-group p-1">
             <label htmlFor="zip">Postal / Zip Code</label>
             <input
-              type="text"
+              type="number"
               className={
                 errors.zip
                   ? "form-control is-invalid"
