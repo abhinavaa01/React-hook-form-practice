@@ -3,6 +3,9 @@ const userEmail = JSON.parse(localStorage.getItem("universal-storage"))?.state.u
 
 export const storeNewTodo = async (todo) => {
     try {
+        if (!userEmail) {
+            throw new Error("User not logged in...");
+        }
         const apiResponse = await fetch(apiUrl + `todos`, {
             method: "POST",
             headers: {
@@ -31,6 +34,9 @@ export const storeNewTodo = async (todo) => {
 
 export const getAllTodos = async () => {
     try {
+        if (!userEmail) {
+            throw new Error("User not logged in...");
+        }
         const apiResponse = await fetch(apiUrl + `todos` +`?userEmail=${userEmail}`);
 
         if (!apiResponse.ok) {
@@ -53,6 +59,9 @@ export const getAllTodos = async () => {
 
 export const updateTodo = async (todo) => {
     try {
+        if (!userEmail) {
+            throw new Error("User not logged in...");
+        }
         const apiResponse = await fetch(
             apiUrl + `todos/${todo.id}`,
             {
@@ -84,6 +93,9 @@ export const updateTodo = async (todo) => {
 
 export const deleteTodo = async (todoId) => {
     try {
+        if (!userEmail) {
+            throw new Error("User not logged in...");
+        }
         const apiResponse = await fetch(
             apiUrl + `todos/${todoId}`,
             {
