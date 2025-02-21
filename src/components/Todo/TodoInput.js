@@ -7,12 +7,12 @@ import { jsonApi, todoUtils } from "../../service/index.js";
 const TodoInput = () => {
   const allTodos = useUniversalStore((state) => state.todos);
   const setTodos = useUniversalStore((state) => state.setTodos);
-  const userEmail = useUniversalStore((state)=> state.userData)?.email;
+  const userEmail = useUniversalStore((state) => state.userData)?.email;
   const [selectedImage, setSelectedImage] = useState("");
   const [clearImage, setClearImage] = useState(false);
   const success = useMessageStore((state) => state.success);
-  const loadingStore = useMessageStore((state)=> state.loading);
-  
+  const loadingStore = useMessageStore((state) => state.loading);
+
   const {
     register,
     handleSubmit,
@@ -23,25 +23,27 @@ const TodoInput = () => {
   const addTodoHandler = (data) => {
     loadingStore("Saving todo on server please wait...");
     const todoObj = {
+      id: Date.now().toString().slice(5),
       text: data.todoText,
       image: selectedImage,
       isCompleted: false,
       userEmail: userEmail || "",
     };
 
+    // Save todo in localstorage
+    // Get the new TodosArr
+    const newTodos = todoUtils.addTodo(allTodos, todoObj);
+    setTodos(newTodos);
+
     // save the todo in the database
     jsonApi
       .storeNewTodo(todoObj)
       .then((res) => {
-        // Get the new TodosArr
-        const newTodos = todoUtils.addTodo(allTodos, res);
-        setTodos(newTodos);
-
         // alert("Todo Added Successfully");
-        success("Todo Added Successfully");
+        success("Todo Added and saved to server Successfully");
       })
       .catch((err) => {
-        alert("Failed to Add Todo");
+        alert("Failed to Save Todo on server... Added Todo to local storage");
       });
 
     // Clear the input field

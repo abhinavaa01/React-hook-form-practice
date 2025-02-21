@@ -20,15 +20,14 @@ const ConfirmModal = () => {
 
   const confirmHandler = () => {
     loading("Deleting Todo...");
+        deleteLocally();
     jsonApi
       .deleteTodo(content.data.id)
       .then((res) => {
-        deleteLocally();
         success("Todo Deleted from server and local storage Successfully !");
       })
       .catch((err) => {
-        failure(err.message? err.message + ", Deleting from local storage" : "Failed to delete Todo, deleting from localStorage");
-        deleteLocally();
+        failure(err.message? err.message + ", Deleting from local storage" : "Failed to delete Todo, deleted from localStorage");
       });
     hide();
   };

@@ -43,9 +43,7 @@ const EditModal = () => {
     jsonApi.updateTodo(newTodo).then((res)=> {
       successFunc("Todo Updated Successfully on both server and local storage !");
     }).catch((err)=> {
-      failureFunc(err.message? err.message + ", Editing in local Storage..." : "Failed to update Todo on server, updating in local storage...");
-      const newTodos = todoUtils.editTodo(allTodos, newTodo);
-      setTodos(newTodos);
+      failureFunc(err.message? err.message + ", Edited in local Storage..." : "Failed to update Todo on server, updating in local storage...");
     });
 
 
