@@ -11,6 +11,7 @@ const TodoInput = () => {
   const [selectedImage, setSelectedImage] = useState("");
   const [clearImage, setClearImage] = useState(false);
   const success = useMessageStore((state) => state.success);
+  const failure = useMessageStore((state) => state.failure);
   const loadingStore = useMessageStore((state) => state.loading);
 
   const {
@@ -43,7 +44,7 @@ const TodoInput = () => {
         success("Todo Added and saved to server Successfully");
       })
       .catch((err) => {
-        alert("Failed to Save Todo on server... Added Todo to local storage");
+        failure("Failed to Save Todo on server... Added Todo to local storage");
       });
 
     // Clear the input field
