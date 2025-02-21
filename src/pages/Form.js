@@ -23,13 +23,13 @@ const Form = () => {
     control,
   } = useForm();
 
-  useEffect(()=> {
+  useEffect(() => {
     if (isloggedIn) {
       setTimeout(() => {
         navigate(-1);
       }, 3000);
     }
-  }, [isloggedIn])
+  }, [isloggedIn]);
 
   const success = (msg) => {
     setMessages({
@@ -229,6 +229,9 @@ const Form = () => {
                         : "form-control"
                     }
                     name="password"
+                    onCopy={(e) => e.preventDefault()}
+                    onCut={(e) => e.preventDefault()}
+                    onPaste={(e) => e.preventDefault()}
                     {...register("password", {
                       required: true,
                       min: {
@@ -277,6 +280,9 @@ const Form = () => {
                       : "form-control"
                   }
                   name="confirmPassword"
+                  onCopy={(e) => e.preventDefault()}
+                  onCut={(e) => e.preventDefault()}
+                  onPaste={(e) => e.preventDefault()}
                   {...register("confirmPassword", {
                     required: true,
                     validate: (val) => {

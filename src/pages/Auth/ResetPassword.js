@@ -70,18 +70,20 @@ const ResetPassword = () => {
   const resetPass = (data) => {
     if (messages.loading) return;
     loading();
-    authJsonApi.updateUserPassword(data.email, data.password).then((result)=> {
-      success("Successfully resetted password !");
-      saveLogin(result);
-    }).catch((err)=> {
-      failure(err.message? err.message : err);
-    });
-  }
+    authJsonApi
+      .updateUserPassword(data.email, data.password)
+      .then((result) => {
+        success("Successfully resetted password !");
+        saveLogin(result);
+      })
+      .catch((err) => {
+        failure(err.message ? err.message : err);
+      });
+  };
 
   const toggleVisibility = (e) => {
     setVisiblity((prev) => !prev);
   };
-
 
   return (
     <div className="d-flex">
@@ -118,7 +120,7 @@ const ResetPassword = () => {
               })}
               aria-invalid={errors.email ? "true" : "false"}
               id="email"
-              placeholder={user?.email? user.email : "Enter your email"}
+              placeholder={user?.email ? user.email : "Enter your email"}
             />
             <div className="invalid-feedback">
               Please enter a valid email address.
@@ -139,6 +141,9 @@ const ResetPassword = () => {
                     : "form-control"
                 }
                 name="password"
+                onCopy={(e) => e.preventDefault()}
+                onCut={(e) => e.preventDefault()}
+                onPaste={(e) => e.preventDefault()}
                 {...register("password", {
                   required: true,
                   min: {

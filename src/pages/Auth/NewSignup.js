@@ -132,6 +132,9 @@ const NewSignup = () => {
                 : "form-control"
             }
             name="password"
+            onCopy={(e) => e.preventDefault()}
+            onCut={(e) => e.preventDefault()}
+            onPaste={(e) => e.preventDefault()}
             {...register("password", {
               required: true,
               min: {
@@ -175,6 +178,9 @@ const NewSignup = () => {
               : "form-control"
           }
           name="confirmPassword"
+            onCopy={(e) => e.preventDefault()}
+            onCut={(e) => e.preventDefault()}
+            onPaste={(e) => e.preventDefault()}
           {...register("confirmPassword", {
             required: true,
             validate: (val) => {
