@@ -17,8 +17,7 @@ const ExistingLogin = () => {
     register,
     handleSubmit,
     formState: { touchedFields, errors, dirtyFields },
-    control,
-  } = useForm();
+  } = useForm({ mode: "onChange" });
 
   const success = (msg) => {
     setMessages({
@@ -99,11 +98,17 @@ const ExistingLogin = () => {
             pattern: {
               value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
               message: "Please enter a valid email address.",
-            }, validate : {
+            },
+            validate: {
               checkEmail: (value) => {
-                return value === "" || value === undefined || value === null || value.length < 5 ? "Email is too short." : true;
-            }
-          }
+                return value === "" ||
+                  value === undefined ||
+                  value === null ||
+                  value.length < 5
+                  ? "Email is too short."
+                  : true;
+              },
+            },
           })}
           aria-invalid={errors.email ? "true" : "false"}
           id="email"
@@ -134,12 +139,20 @@ const ExistingLogin = () => {
             id="password"
           />
           <i
-            className="position-absolute top-50 end-0 me-2"
+            className={
+              errors.password || dirtyFields.password
+                ? "position-absolute top-50 end-0 me-5"
+                : "position-absolute top-50 end-0 me-2"
+            }
             id="togglePassword"
             onClick={toggleVisibility}
             style={{ transform: "translateY(-50%)", cursor: "pointer" }}
           >
-            {visiblePass ? "🙈" : "👁"}
+            {visiblePass ? (
+              <i className="bi bi-eye-slash-fill"></i>
+            ) : (
+              <i className="bi bi-eye-fill"></i>
+            )}
           </i>
           <div className="invalid-feedback">Password is required.</div>
         </div>

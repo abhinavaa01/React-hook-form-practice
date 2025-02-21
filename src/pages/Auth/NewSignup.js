@@ -53,7 +53,7 @@ const NewSignup = () => {
     watch,
     formState: { touchedFields, errors, dirtyFields },
     control,
-  } = useForm();
+  } = useForm({ mode: "onChange" });
 
   const signUp = (data) => {
     if (messages.loading) return;

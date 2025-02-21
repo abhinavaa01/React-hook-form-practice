@@ -21,7 +21,7 @@ const Form = () => {
     watch,
     formState: { touchedFields, errors, dirtyFields },
     control,
-  } = useForm();
+  } = useForm({ mode: "onChange" });
 
   useEffect(() => {
     if (isloggedIn) {
