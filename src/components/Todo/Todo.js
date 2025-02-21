@@ -19,15 +19,23 @@ const Todo = ({ data }) => {
 
   const todoToggleHandler = (e) => {
     // e.preventDefault();
+    loadingFunc("Updating Todo on server ...");
     const newTodo = { ...data, isCompleted: !data.isCompleted };
     const newTodos = todoUtils.toggleTodo(allTodos, data);
-      setTodos(newTodos);
-    jsonApi.updateTodo(newTodo).then((updatedTodo) => {
-      successFunc("Todo Updated on server Successfully !");
-    }).catch((err) => {
-      failureFunc("Failed to update Todo on server ! Error: " + err.message? err.message : err);
-      console.error(err);
-    });
+    setTodos(newTodos);
+    jsonApi
+      .updateTodo(newTodo)
+      .then((updatedTodo) => {
+        successFunc("Todo Updated on server Successfully !");
+      })
+      .catch((err) => {
+        failureFunc(
+          "Failed to update Todo on server ! Error: " + err.message
+            ? err.message
+            : err
+        );
+        console.error(err);
+      });
   };
 
   const editHandler = (e) => {
@@ -68,7 +76,11 @@ const Todo = ({ data }) => {
         {data.image ? (
           <img
             src={data.image}
-            className="todo-attachment-img me-auto rounded-2 m-2"
+            className={
+              data.isCompleted
+                ? "todo-attachment-img me-auto rounded-2 m-2 less-contrast"
+                : "todo-attachment-img me-auto rounded-2 m-2"
+            }
           />
         ) : null}
         <span
