@@ -79,7 +79,7 @@ const Todo = ({ data }) => {
             className={
               data.isCompleted
                 ? "todo-attachment-img me-auto rounded-2 m-2 less-contrast"
-                : "todo-attachment-img me-auto rounded-2 m-2"
+                : "todo-attachment-img me-auto rounded-2 m-2 shadow-lg"
             }
           />
         ) : null}

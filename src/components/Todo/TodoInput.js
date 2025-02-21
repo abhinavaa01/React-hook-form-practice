@@ -81,13 +81,16 @@ const TodoInput = () => {
         aria-label="Add a task you want to do"
       />
       <button
-        className="btn btn-outline-secondary"
+        className="btn btn-outline-secondary rounded-end"
         type="submit"
         id="button-addon2"
         onClick={handleSubmit(addTodoHandler)}
       >
         ADD
       </button>
+      <div className="invalid-feedback">
+        Please enter a Todo.
+      </div>
       <div className="container">
         <ImagePicker handleImage={setImageString} clearImage={clearImage} />
       </div>
