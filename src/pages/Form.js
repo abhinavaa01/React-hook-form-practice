@@ -425,7 +425,11 @@ const Form = () => {
               {...register("zip", {
                 required: "Please enter your postal/zip code.",
                 validate: (val) => {
-                  return val.length === 6 || "Please enter a valid zip code";
+                  if (/^[0-9]*$/i.test(val) === false) {
+                    return "Only numbers allowed";
+                  } else if (val.length !== 6) {
+                    return "Please enter a valid Zip code";
+                  } else return true;
                 }
               })}
               aria-invalid={errors.zip ? "true" : "false"}
