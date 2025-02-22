@@ -300,9 +300,9 @@ const Form = () => {
           </div>
 
           <div className="form-group p-1 d-flex flex-column ">
-            <label htmlFor="phone">Phone No. (with country code)</label>
+            <label htmlFor="phone">Phone No. (without country code)</label>
             <input
-              type="tel"
+              type="number"
               className={
                 errors.phone
                   ? "form-control is-invalid"
@@ -422,19 +422,9 @@ const Form = () => {
               name="zip"
               {...register("zip", {
                 required: "Please enter your postal/zip code.",
-                valueAsNumber: true,
-                minLength: {
-                  value: 6,
-                  message: "Too small to be a pin/code",
-                },
-                maxLength: {
-                  value: 6,
-                  message: "Too Large to be a pin/code",
-                },
-                pattern: {
-                  value: /^(0|[1-9]\d*)(\.\d+)?$/,
-                  message: "Only numbers allowed",
-                },
+                validate: (val) => {
+                  return val.length === 6 || "Please enter a valid zip code";
+                }
               })}
               aria-invalid={errors.zip ? "true" : "false"}
             />
