@@ -422,6 +422,7 @@ const Form = () => {
               name="zip"
               {...register("zip", {
                 required: "Please enter your postal/zip code.",
+                valueAsNumber: true,
                 minLength: {
                   value: 6,
                   message: "Too small to be a pin/code",
