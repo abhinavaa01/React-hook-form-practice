@@ -1,7 +1,7 @@
 const apiUrl = process.env.REACT_APP_JSONServerAPIUrl;
+const userEmail = JSON.parse(localStorage.getItem("universal-storage"))?.state.userData?.email;
 
 export const storeNewTodo = async (todo) => {
-    const userEmail = JSON.parse(localStorage.getItem("universal-storage"))?.state.userData?.email;
     try {
         if (!userEmail) {
             throw new Error("User not logged in...");
@@ -33,7 +33,6 @@ export const storeNewTodo = async (todo) => {
 
 
 export const getAllTodos = async () => {
-    const userEmail = JSON.parse(localStorage.getItem("universal-storage"))?.state.userData?.email;
     try {
         if (!userEmail) {
             throw new Error("User not logged in...");
@@ -59,7 +58,6 @@ export const getAllTodos = async () => {
 
 
 export const updateTodo = async (todo) => {
-    const userEmail = JSON.parse(localStorage.getItem("universal-storage"))?.state.userData?.email;
     try {
         if (!userEmail) {
             throw new Error("User not logged in...");
@@ -94,7 +92,6 @@ export const updateTodo = async (todo) => {
 
 
 export const deleteTodo = async (todoId) => {
-    const userEmail = JSON.parse(localStorage.getItem("universal-storage"))?.state.userData?.email;
     try {
         if (!userEmail) {
             throw new Error("User not logged in...");
