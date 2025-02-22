@@ -14,7 +14,7 @@ const Header = () => {
   useEffect(()=> {
     if(isloggedIn) {
       loading("Fetching Todos from your account...");
-      jsonApi.getAllTodos().then((todos) => {
+      jsonApi.getAllTodos(user.email).then((todos) => {
         const mergedTodos = todoUtils.mergeTodos(allTodos, todos);
         setTodos(mergedTodos);
         success("Todos fetched Successfully !" + " (" + todos.length + " Todos)");

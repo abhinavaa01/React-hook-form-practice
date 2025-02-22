@@ -38,7 +38,7 @@ const TodoInput = () => {
 
     // save the todo in the database
     jsonApi
-      .storeNewTodo(todoObj)
+      .storeNewTodo(todoObj, userEmail)
       .then((res) => {
         // alert("Todo Added Successfully");
         success("Todo Added and saved to server Successfully");

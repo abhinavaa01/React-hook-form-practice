@@ -6,6 +6,7 @@ import { jsonApi, todoUtils } from "../../service";
 const ConfirmModal = () => {
   const allTodos = useUniversalStore((state)=> state.todos);
   const setTodos = useUniversalStore((state)=> state.setTodos);
+  const emailId = useUniversalStore((state)=> state.userData?.email);
   const show = useModalStore((state) => state.visiblity);
   const content = useModalStore((state) => state.modalContent);
   const hide = useModalStore((state) => state.hideModal);
@@ -22,7 +23,7 @@ const ConfirmModal = () => {
     loading("Deleting Todo...");
         deleteLocally();
     jsonApi
-      .deleteTodo(content.data.id)
+      .deleteTodo(content.data.id, emailId)
       .then((res) => {
         success("Todo Deleted from server and local storage Successfully !");
       })

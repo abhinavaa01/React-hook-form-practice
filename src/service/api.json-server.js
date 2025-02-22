@@ -1,9 +1,8 @@
 const apiUrl = process.env.REACT_APP_JSONServerAPIUrl;
-const userEmail = JSON.parse(localStorage.getItem("universal-storage"))?.state.userData?.email;
 
-export const storeNewTodo = async (todo) => {
+export const storeNewTodo = async (todo, emailId) => {
     try {
-        if (!userEmail) {
+        if (!emailId) {
             throw new Error("User not logged in...");
         }
         const apiResponse = await fetch(apiUrl + `todos`, {
@@ -32,12 +31,12 @@ export const storeNewTodo = async (todo) => {
 };
 
 
-export const getAllTodos = async () => {
+export const getAllTodos = async (emailId) => {
     try {
-        if (!userEmail) {
+        if (!emailId) {
             throw new Error("User not logged in...");
         }
-        const apiResponse = await fetch(apiUrl + `todos` +`?userEmail=${userEmail}`);
+        const apiResponse = await fetch(apiUrl + `todos` +`?userEmail=${emailId}`);
 
         if (!apiResponse.ok) {
             const errorText = await apiResponse.text();
@@ -57,9 +56,9 @@ export const getAllTodos = async () => {
 };
 
 
-export const updateTodo = async (todo) => {
+export const updateTodo = async (todo, emailId) => {
     try {
-        if (!userEmail) {
+        if (!emailId) {
             throw new Error("User not logged in...");
         }
         const apiResponse = await fetch(
@@ -91,9 +90,9 @@ export const updateTodo = async (todo) => {
 };
 
 
-export const deleteTodo = async (todoId) => {
+export const deleteTodo = async (todoId, emailId) => {
     try {
-        if (!userEmail) {
+        if (!emailId) {
             throw new Error("User not logged in...");
         }
         const apiResponse = await fetch(

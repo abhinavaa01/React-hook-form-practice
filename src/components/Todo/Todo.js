@@ -11,6 +11,7 @@ import { jsonApi, todoUtils } from "../../service";
 const Todo = ({ data }) => {
   const setTodos = useUniversalStore((state) => state.setTodos);
   const allTodos = useUniversalStore((state) => state.todos);
+  const emailId = useUniversalStore((state) => state.userData?.email);
   const delConfirm = useModalStore((state) => state.updateModal);
   const editModalContent = useEditModalStore((state) => state.updateModal);
   const successFunc = useMessageStore((state) => state.success);
@@ -24,7 +25,7 @@ const Todo = ({ data }) => {
     const newTodos = todoUtils.toggleTodo(allTodos, data);
     setTodos(newTodos);
     jsonApi
-      .updateTodo(newTodo)
+      .updateTodo(newTodo, emailId)
       .then((updatedTodo) => {
         successFunc("Todo Updated on server Successfully !");
       })

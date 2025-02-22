@@ -7,6 +7,7 @@ import { jsonApi, todoUtils } from "../../service";
 const EditModal = () => {
   const allTodos = useUniversalStore((state)=> state.todos);
   const setTodos = useUniversalStore((state)=> state.setTodos);
+  const emailId = useUniversalStore((state)=> state.userData?.email);
   const show = useEditModalStore((state) => state.visiblity);
   const content = useEditModalStore((state) => state.modalContent);
   const hide = useEditModalStore((state) => state.hideModal);
@@ -40,7 +41,7 @@ const EditModal = () => {
       setTodos(newTodos);
 
     // Saving the change on the server
-    jsonApi.updateTodo(newTodo).then((res)=> {
+    jsonApi.updateTodo(newTodo, emailId).then((res)=> {
       successFunc("Todo Updated Successfully on both server and local storage !");
     }).catch((err)=> {
       failureFunc(err.message? err.message + ", Edited in local Storage..." : "Failed to update Todo on server, updating in local storage...");
