@@ -44,7 +44,8 @@ const TodoInput = () => {
         success("Todo Added and saved to server Successfully");
       })
       .catch((err) => {
-        failure("Failed to Save Todo on server... Added Todo to local storage");
+        console.error(err);
+        failure(err.message? err.message + " Failed to Save Todo on server... Added Todo to local storage" : "Failed to Save Todo on server... Added Todo to local storage");
       });
 
     // Clear the input field

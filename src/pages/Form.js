@@ -318,20 +318,22 @@ const Form = () => {
               {...register("phone", {
                 required: true,
                 pattern: {
-                  value: /^(0|[1-9]\d*)(\.\d+)?$/,
+                  value: /^[0-9]*$/,
                   message: "Only numbers allowed",
                 },
                 validate: (val) => {
-                  if (val.length > 11 || val.length < 10) {
+                  if (/^[0-9]*$/i.test(val) === false) {
+                    return "Only numbers allowed";
+                  } else if (val.length > 11 || val.length < 10) {
                     return "Please enter a valid phone number";
-                  }
+                  } else return true;
                 },
               })}
               placeholder="081234 56789"
               data-intl-tel-input-id="0"
             />
             <div className="invalid-feedback">
-              Please enter a valid phone number.
+              {errors.phone?.message || "Please enter a valid phone number"}
             </div>
           </div>
           <div className="form-group p-1">
