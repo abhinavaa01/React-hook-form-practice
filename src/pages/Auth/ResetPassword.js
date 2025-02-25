@@ -19,7 +19,7 @@ const ResetPassword = () => {
     watch,
     formState: { touchedFields, errors, dirtyFields },
     control,
-  } = useForm({ mode: "onChange" });
+  } = useForm({ mode: "onTouched" });
 
   const success = (msg) => {
     setMessages({

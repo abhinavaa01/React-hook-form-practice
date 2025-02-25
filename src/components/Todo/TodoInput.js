@@ -19,7 +19,7 @@ const TodoInput = () => {
     handleSubmit,
     formState: { touchedFields, errors, dirtyFields },
     setValue,
-  } = useForm({ mode: "onChange" });
+  } = useForm({ mode: "onTouched" });
 
   const addTodoHandler = (data) => {
     loadingStore("Saving todo on server please wait...");

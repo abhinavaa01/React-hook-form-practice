@@ -17,7 +17,7 @@ const ExistingLogin = () => {
     register,
     handleSubmit,
     formState: { touchedFields, errors, dirtyFields },
-  } = useForm({ mode: "onChange" });
+  } = useForm({ mode: "onTouched" });
 
   const success = (msg) => {
     setMessages({

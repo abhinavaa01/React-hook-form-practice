@@ -19,7 +19,7 @@ const EditModal = () => {
     handleSubmit,
     formState: { touchedFields, errors, dirtyFields },
     setValue,
-  } = useForm({ mode: "onChange" });
+  } = useForm({ mode: "onTouched" });
 
   useEffect(() => {
     // console.log("content changed", content);
