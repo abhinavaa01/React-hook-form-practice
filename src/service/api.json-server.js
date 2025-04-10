@@ -1,4 +1,4 @@
-const apiUrl = "http://localhost:4100/" || process.env.REACT_APP_JSONServerAPIUrl;
+const apiUrl = process.env.REACT_APP_JSONServerAPIUrl;
 
 export const testFunc = async (query) => {
     try {
