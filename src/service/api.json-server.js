@@ -1,4 +1,26 @@
-const apiUrl = process.env.REACT_APP_JSONServerAPIUrl;
+const apiUrl = "http://localhost:4100/" || process.env.REACT_APP_JSONServerAPIUrl;
+
+export const testFunc = async (query) => {
+    try {
+        const apiResponse = await fetch(apiUrl + query);
+
+        if (!apiResponse.ok) {
+            const errorText = await apiResponse.text();
+            throw new Error(
+                `API request failed with status ${apiResponse.status}: ${
+                    errorText || apiResponse.statusText
+                }`
+            );
+        }
+
+        const data = apiResponse;
+        console.log(data);
+        return data;
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
+};
 
 export const storeNewTodo = async (todo, emailId) => {
     try {
@@ -51,7 +73,7 @@ export const getAllTodos = async (emailId) => {
         return todos;
     } catch (error) {
         console.error(error);
-        throw error;
+        // throw error;
     }
 };
 

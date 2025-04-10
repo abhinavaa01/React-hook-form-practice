@@ -1,4 +1,4 @@
-const apiUrl = process.env.REACT_APP_JSONServerAPIUrl;
+const apiUrl = "http://localhost:4100/" || process.env.REACT_APP_JSONServerAPIUrl;
 
 // Function created using gemini AI
 export const login = async (email, pass) => {

@@ -28,6 +28,11 @@ const Header = () => {
     saveLogout(null);
   };
 
+  const tryFunc = () => {
+    const querystring = prompt("Enter Query");
+    jsonApi.testFunc(querystring);
+  }
+
   return (
     <div className="bg-info px-3 py-2 d-flex">
       <NavLink
@@ -107,6 +112,7 @@ const Header = () => {
           LOGIN
         </NavLink>
       )}
+        <button onClick={tryFunc} className="btn btn-warning mx-2">Dummy</button>
     </div>
   );
 };
