@@ -4,15 +4,8 @@ const apiUrl = process.env.REACT_APP_JSONServerAPIUrl;
 export const login = async (email, pass) => {
   // Use async/await
   try {
-    const response = await fetch(apiUrl + "users?email=" + email);
-    if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(
-        `HTTP error ${response.status}: ${errorText || response.statusText}`
-      );
-    }
-
-    const users = await response.json(); // Await response.json()
+    const user = await findUserByEmail(email);
+    const users = user? [user] : [];
 
     if (users.length) {
       if (users[0].password === pass) {
@@ -37,18 +30,19 @@ export const signUp = async (data) => {
   // const newUserData = { email: data.email, password: data.password };
   try {
     // 1. Check if user with email already exists
-    const checkResponse = await fetch(apiUrl + `users?email=${data.email}`);
-    if (!checkResponse.ok) {
-      const errorText = await checkResponse.text();
-      throw new Error(
-        `HTTP error ${checkResponse.status}: ${
-          errorText || checkResponse.statusText
-        }`
-      );
-    }
-    const existingUsers = await checkResponse.json();
+    // const checkResponse = await fetch(apiUrl + `users?email=${data.email}`);
+    // if (!checkResponse.ok) {
+    //   const errorText = await checkResponse.text();
+    //   throw new Error(
+    //     `HTTP error ${checkResponse.status}: ${
+    //       errorText || checkResponse.statusText
+    //     }`
+    //   );
+    // }
+    const existingUser = await findUserByEmail(data.email);
+    console.log(existingUser);
 
-    if (existingUsers.length > 0) {
+    if (existingUser) {
       throw new Error("User with this email already exists."); // Or return null, etc.
     }
     const response = await fetch(apiUrl + "users", {
@@ -169,7 +163,7 @@ export const findUserByEmail = async (email) => {
     if (users.length) {
       return users[0];
     } else {
-      throw new Error("User with this email not found !");
+      return null;
     }
   } catch (error) {
     console.error(error);

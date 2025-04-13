@@ -69,7 +69,8 @@ export const getAllTodos = async (emailId) => {
             );
         }
 
-        const todos = await apiResponse.json();
+        const json = await apiResponse.json();
+        const todos = json.todos;
         return todos;
     } catch (error) {
         console.error(error);

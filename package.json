@@ -47,6 +47,7 @@
     ]
   },
   "devDependencies": {
-    "@hookform/devtools": "^4.3.3"
+    "@hookform/devtools": "^4.3.3",
+    "concurrently": "^9.1.2"
   }
 }
